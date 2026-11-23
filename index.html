@@ -2,128 +2,296 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Jenning 的应用雷达 · iOS TestFlight 名额 & 限免降价</title>
-<meta name="description" content="只收 iOS：TestFlight 开放名额、App Store 限免与降价，逐条核实后收录。最近核实：2026-11-23。">
-<meta name="theme-color" content="#0b0e1d">
+<meta name="description" content="只收 iOS：TestFlight 开放名额、App Store 限免与降价，逐条核实后收录，由 GitHub Actions 自动更新。">
+<meta name="theme-color" content="#080b16">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%A1%3C/text%3E%3C/svg%3E">
+<script>
+/* 主题：默认跟随系统，localStorage 记住手动选择，先于 CSS 执行避免闪烁 */
+(function(){
+  try{
+    var t = localStorage.getItem('jr-theme');
+    if(t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  }catch(e){}
+})();
+</script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+  /* ---------- 深色（默认 / 暗夜流光玻璃拟态） ---------- */
   :root{
-    --bg:#080b16; --card:rgba(255,255,255,.045); --line:rgba(255,255,255,.09);
-    --txt:#eef2fa; --dim:#98a5c0; --dim2:#6b7896;
-    --tf:#3ddc97; --free:#b18cff; --deal:#ffb020;
-  }
-  html{-webkit-text-size-adjust:100%}
-  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    color:var(--txt);min-height:100vh;background:
+    --bg:#080b16;
+    --body-bg:
       radial-gradient(1200px 600px at 12% -8%,rgba(88,69,232,.30),transparent 60%),
       radial-gradient(900px 520px at 92% 4%,rgba(194,42,114,.22),transparent 62%),
       linear-gradient(170deg,#080b16 0%,#0d1330 48%,#080b16 100%);
-    background-attachment:fixed;overflow-x:hidden;padding:26px 14px 40px;line-height:1.55}
+    --grid-line:rgba(255,255,255,.028);
+    --card:rgba(255,255,255,.045);
+    --card-hover:rgba(255,255,255,.072);
+    --line:rgba(255,255,255,.09);
+    --line-strong:rgba(255,255,255,.18);
+    --chip:rgba(255,255,255,.05);
+    --chip-border:rgba(255,255,255,.08);
+    --txt:#eef2fa; --dim:#98a5c0; --dim2:#6b7896;
+    --desc:#c3cee2; --meta:#93a0bd;
+    --tf:#3ddc97; --free:#b18cff; --deal:#ffb020;
+    --tf-bg:rgba(61,220,151,.12); --tf-bd:rgba(61,220,151,.30);
+    --free-bg:rgba(177,140,255,.14); --free-bd:rgba(177,140,255,.32);
+    --deal-bg:rgba(255,176,32,.13); --deal-bd:rgba(255,176,32,.32);
+    --tf-btn:linear-gradient(135deg,#1f9d6b,#2fbf8c);
+    --free-btn:linear-gradient(135deg,#7c5cf0,#a06bff);
+    --deal-btn:linear-gradient(135deg,#e09f1f,#e2683a);
+    --tf-shadow:rgba(26,160,110,.30); --free-shadow:rgba(124,92,240,.30); --deal-shadow:rgba(224,130,45,.30);
+    --tab-on:linear-gradient(135deg,#3b82f6,#8b5cf6);
+    --tab-shadow:rgba(99,102,241,.45);
+    --hero:linear-gradient(100deg,#7cc4ff,#b18cff 45%,#ff8ac2 75%,#ffd479);
+    --shadow:0 16px 34px rgba(0,0,0,.28);
+    --controls-bg:linear-gradient(180deg,rgba(8,11,22,.94),rgba(8,11,22,.80) 70%,rgba(8,11,22,0));
+    --cta:#9fb0d4; --strike:rgba(255,120,120,.60);
+    --skeleton:linear-gradient(100deg,rgba(255,255,255,.045) 25%,rgba(255,255,255,.10) 37%,rgba(255,255,255,.045) 63%);
+    --toggle-bg:rgba(255,255,255,.07); --toggle-line:rgba(255,255,255,.14);
+    --focus:rgba(139,92,246,.55);
+  }
+
+  /* ---------- 浅色（跟随系统时的浅色） ---------- */
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme]){
+      --bg:#f4f6fb;
+      --body-bg:
+        radial-gradient(1100px 560px at 10% -10%,rgba(99,132,255,.20),transparent 62%),
+        radial-gradient(900px 520px at 94% 2%,rgba(255,146,196,.20),transparent 64%),
+        linear-gradient(170deg,#f7f9ff 0%,#eef2fc 46%,#f7f9ff 100%);
+      --grid-line:rgba(20,30,60,.045);
+      --card:rgba(255,255,255,.78);
+      --card-hover:rgba(255,255,255,.96);
+      --line:rgba(20,32,66,.10);
+      --line-strong:rgba(20,32,66,.20);
+      --chip:rgba(255,255,255,.72);
+      --chip-border:rgba(20,32,66,.10);
+      --txt:#131a2e; --dim:#5a6784; --dim2:#8792ab;
+      --desc:#3c4763; --meta:#5f6b86;
+      --tf:#0a7f57; --free:#6a3fd6; --deal:#a86200;
+      --tf-bg:rgba(10,174,113,.13); --tf-bd:rgba(10,174,113,.28);
+      --free-bg:rgba(120,80,230,.12); --free-bd:rgba(120,80,230,.26);
+      --deal-bg:rgba(240,150,20,.14); --deal-bd:rgba(240,150,20,.30);
+      --tf-btn:linear-gradient(135deg,#087f58,#12b083);
+      --free-btn:linear-gradient(135deg,#6b46e5,#9161ff);
+      --deal-btn:linear-gradient(135deg,#d98b12,#e0662f);
+      --tf-shadow:rgba(10,140,96,.22); --free-shadow:rgba(107,70,229,.22); --deal-shadow:rgba(217,139,18,.22);
+      --tab-on:linear-gradient(135deg,#2f6bf0,#7c54f0);
+      --tab-shadow:rgba(90,105,230,.28);
+      --hero:linear-gradient(100deg,#1d63d6,#6a3fd6 45%,#d8368b 75%,#c07a00);
+      --shadow:0 14px 30px rgba(26,42,90,.10);
+      --controls-bg:linear-gradient(180deg,rgba(246,249,255,.94),rgba(246,249,255,.82) 70%,rgba(246,249,255,0));
+      --cta:#4a5c86; --strike:rgba(200,60,60,.55);
+      --skeleton:linear-gradient(100deg,rgba(20,32,66,.05) 25%,rgba(20,32,66,.10) 37%,rgba(20,32,66,.05) 63%);
+      --toggle-bg:rgba(255,255,255,.85); --toggle-line:rgba(20,32,66,.12);
+      --focus:rgba(90,110,230,.45);
+    }
+  }
+
+  /* ---------- 手动指定浅色 ---------- */
+  :root[data-theme="light"]{
+    --bg:#f4f6fb;
+    --body-bg:
+      radial-gradient(1100px 560px at 10% -10%,rgba(99,132,255,.20),transparent 62%),
+      radial-gradient(900px 520px at 94% 2%,rgba(255,146,196,.20),transparent 64%),
+      linear-gradient(170deg,#f7f9ff 0%,#eef2fc 46%,#f7f9ff 100%);
+    --grid-line:rgba(20,30,60,.045);
+    --card:rgba(255,255,255,.78);
+    --card-hover:rgba(255,255,255,.96);
+    --line:rgba(20,32,66,.10);
+    --line-strong:rgba(20,32,66,.20);
+    --chip:rgba(255,255,255,.72);
+    --chip-border:rgba(20,32,66,.10);
+    --txt:#131a2e; --dim:#5a6784; --dim2:#8792ab;
+    --desc:#3c4763; --meta:#5f6b86;
+    --tf:#0a7f57; --free:#6a3fd6; --deal:#a86200;
+    --tf-bg:rgba(10,174,113,.13); --tf-bd:rgba(10,174,113,.28);
+    --free-bg:rgba(120,80,230,.12); --free-bd:rgba(120,80,230,.26);
+    --deal-bg:rgba(240,150,20,.14); --deal-bd:rgba(240,150,20,.30);
+    --tf-btn:linear-gradient(135deg,#087f58,#12b083);
+    --free-btn:linear-gradient(135deg,#6b46e5,#9161ff);
+    --deal-btn:linear-gradient(135deg,#d98b12,#e0662f);
+    --tf-shadow:rgba(10,140,96,.22); --free-shadow:rgba(107,70,229,.22); --deal-shadow:rgba(217,139,18,.22);
+    --tab-on:linear-gradient(135deg,#2f6bf0,#7c54f0);
+    --tab-shadow:rgba(90,105,230,.28);
+    --hero:linear-gradient(100deg,#1d63d6,#6a3fd6 45%,#d8368b 75%,#c07a00);
+    --shadow:0 14px 30px rgba(26,42,90,.10);
+    --controls-bg:linear-gradient(180deg,rgba(246,249,255,.94),rgba(246,249,255,.82) 70%,rgba(246,249,255,0));
+    --cta:#4a5c86; --strike:rgba(200,60,60,.55);
+    --skeleton:linear-gradient(100deg,rgba(20,32,66,.05) 25%,rgba(20,32,66,.10) 37%,rgba(20,32,66,.05) 63%);
+    --toggle-bg:rgba(255,255,255,.85); --toggle-line:rgba(20,32,66,.12);
+    --focus:rgba(90,110,230,.45);
+  }
+
+  html{-webkit-text-size-adjust:100%;color-scheme:dark}
+  :root[data-theme="light"]{color-scheme:light}
+  @media (prefers-color-scheme: light){ :root:not([data-theme]){color-scheme:light} }
+  :root[data-theme="dark"]{color-scheme:dark}
+
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--txt);min-height:100vh;background:var(--body-bg);background-attachment:fixed;
+    overflow-x:hidden;padding:22px 14px 40px;line-height:1.55;
+    transition:color .3s ease;
+  }
   body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-    background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
-                     linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
     background-size:46px 46px;mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%);
     -webkit-mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%)}
+  ::selection{background:rgba(139,92,246,.35)}
   .wrap{max-width:1080px;margin:0 auto}
 
-  /* header */
-  header{text-align:center;padding:6px 0 20px}
-  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:2.4px;color:#a9b6d4;
-    border:1px solid var(--line);background:rgba(255,255,255,.045);padding:5px 12px;border-radius:999px}
-  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--tf);box-shadow:0 0 10px var(--tf);display:inline-block}
-  h1{font-size:clamp(26px,7vw,40px);letter-spacing:1px;font-weight:800;margin:14px 0 8px;line-height:1.25;
-    background:linear-gradient(100deg,#7cc4ff,#b18cff 45%,#ff8ac2 75%,#ffd479);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  header p{color:var(--dim);font-size:13.5px;letter-spacing:.6px}
-  .stamp{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-  .stamp span{font-size:11.5px;color:#c6d2e6;background:rgba(255,255,255,.055);border:1px solid var(--line);
-    padding:5px 11px;border-radius:999px;white-space:nowrap}
-  .stamp b{color:#fff;font-weight:700}
+  /* ---------- 主题切换按钮 ---------- */
+  .theme-btn{position:fixed;top:14px;right:14px;z-index:60;display:inline-flex;align-items:center;gap:6px;
+    height:38px;padding:0 13px;border-radius:999px;cursor:pointer;font-family:inherit;font-size:12.5px;
+    color:var(--txt);background:var(--toggle-bg);border:1px solid var(--toggle-line);
+    backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+    box-shadow:0 6px 18px rgba(0,0,0,.16);transition:transform .16s,background .2s,border-color .2s}
+  .theme-btn:hover{transform:translateY(-1px);border-color:var(--line-strong)}
+  .theme-btn:active{transform:scale(.96)}
+  .theme-btn .ico{font-size:14px;line-height:1}
+  .theme-btn .lbl{letter-spacing:.4px;font-weight:600}
+  @media(max-width:520px){.theme-btn .lbl{display:none}.theme-btn{width:38px;padding:0;justify-content:center}}
 
-  /* controls */
-  .controls{position:sticky;top:0;z-index:20;padding:10px 0 12px;margin:6px -14px 4px;
-    background:linear-gradient(180deg,rgba(8,11,22,.94),rgba(8,11,22,.78) 70%,rgba(8,11,22,0));
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  /* ---------- header ---------- */
+  header{text-align:center;padding:10px 0 18px}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:2.4px;color:var(--dim);
+    border:1px solid var(--line);background:var(--chip);padding:5px 12px;border-radius:999px;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--tf);box-shadow:0 0 10px var(--tf);display:inline-block;
+    animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.82)}}
+  h1{font-size:clamp(27px,7.4vw,42px);letter-spacing:1px;font-weight:800;margin:14px 0 8px;line-height:1.22;
+    background:var(--hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:var(--dim);font-size:13.5px;letter-spacing:.6px}
+  .sub em{font-style:normal;color:var(--txt);font-weight:600}
+  .stamp{margin-top:15px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .stamp span{font-size:11.5px;color:var(--dim);background:var(--chip);border:1px solid var(--chip-border);
+    padding:5px 11px;border-radius:999px;white-space:nowrap;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .stamp b{color:var(--txt);font-weight:700}
+  .stamp .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+  /* ---------- controls ---------- */
+  .controls{position:sticky;top:0;z-index:40;padding:10px 0 12px;margin:6px -14px 4px;background:var(--controls-bg);
+    backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3)}
   .controls-inner{max-width:1080px;margin:0 auto;padding:0 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .tabs{display:flex;gap:7px;flex:1 1 320px;overflow-x:auto;scrollbar-width:none}
+  .tabs{display:flex;gap:7px;flex:1 1 320px;overflow-x:auto;scrollbar-width:none;padding:2px}
   .tabs::-webkit-scrollbar{display:none}
-  .tabs button{flex:0 0 auto;padding:9px 15px;border-radius:999px;border:1px solid var(--line);
-    background:rgba(255,255,255,.05);color:#c6d2e6;font-size:13.5px;cursor:pointer;transition:.18s;white-space:nowrap;
-    font-family:inherit}
-  .tabs button:hover{background:rgba(255,255,255,.09)}
-  .tabs button[aria-selected="true"]{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border-color:transparent;
-    font-weight:700;box-shadow:0 8px 20px rgba(99,102,241,.45)}
-  .tabs button em{font-style:normal;opacity:.7;font-size:11.5px;margin-left:4px}
+  .tabs button{flex:0 0 auto;min-height:38px;padding:8px 15px;border-radius:999px;border:1px solid var(--line);
+    background:var(--chip);color:var(--dim);font-size:13.5px;cursor:pointer;transition:.18s;white-space:nowrap;
+    font-family:inherit;font-weight:500}
+  .tabs button:hover{background:var(--card-hover);color:var(--txt)}
+  .tabs button[aria-selected="true"]{background:var(--tab-on);color:#fff;border-color:transparent;
+    font-weight:700;box-shadow:0 8px 20px var(--tab-shadow)}
+  .tabs button em{font-style:normal;opacity:.72;font-size:11.5px;margin-left:5px}
   .search{position:relative;flex:1 1 200px;min-width:150px}
-  .search input{width:100%;padding:10px 13px 10px 34px;border-radius:999px;border:1px solid var(--line);
-    background:rgba(255,255,255,.05);color:var(--txt);font-size:13.5px;font-family:inherit;outline:none;transition:.18s}
-  .search input::placeholder{color:#77839e}
-  .search input:focus{border-color:rgba(139,92,246,.7);background:rgba(139,92,246,.1);box-shadow:0 0 0 3px rgba(139,92,246,.14)}
-  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:#8b96b0;fill:none;stroke-width:2}
+  .search input{width:100%;min-height:38px;padding:9px 13px 9px 34px;border-radius:999px;border:1px solid var(--line);
+    background:var(--chip);color:var(--txt);font-size:13.5px;font-family:inherit;outline:none;transition:.18s;
+    -webkit-appearance:none;appearance:none}
+  .search input::placeholder{color:var(--dim2)}
+  .search input:focus{border-color:var(--focus);background:var(--card-hover);box-shadow:0 0 0 3px var(--focus)}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;
+    stroke:var(--dim2);fill:none;stroke-width:2;pointer-events:none}
 
-  /* grid */
+  /* ---------- grid & cards ---------- */
   .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:10px}
   @media(min-width:720px){.grid{grid-template-columns:1fr 1fr;gap:14px}}
   @media(min-width:1060px){.grid{grid-template-columns:1fr 1fr 1fr}}
-  .card{position:relative;display:flex;flex-direction:column;gap:9px;padding:15px 15px 14px;border-radius:18px;
-    background:var(--card);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    box-shadow:0 16px 34px rgba(0,0,0,.28);transition:transform .18s,border-color .18s,background .18s;
-    animation:pop .28s ease both}
-  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.065)}
-  .card-top{display:flex;align-items:flex-start;gap:9px}
-  .card h2{font-size:16px;font-weight:700;line-height:1.35;letter-spacing:.2px;flex:1;word-break:break-word}
-  .badge{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.4px;padding:3.5px 9px;border-radius:999px;white-space:nowrap;border:1px solid transparent}
-  .badge.tf{color:var(--tf);background:rgba(61,220,151,.12);border-color:rgba(61,220,151,.3)}
-  .badge.free{color:var(--free);background:rgba(177,140,255,.14);border-color:rgba(177,140,255,.32)}
-  .badge.deal{color:var(--deal);background:rgba(255,176,32,.13);border-color:rgba(255,176,32,.32)}
-  .desc{font-size:13px;color:#c3cee2;line-height:1.62}
-  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:auto;padding-top:4px}
-  .meta span{font-size:11px;color:#93a0bd;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  .card{position:relative;display:flex;flex-direction:column;gap:10px;padding:15px 15px 14px;border-radius:20px;
+    background:var(--card);border:1px solid var(--line);
+    backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);
+    box-shadow:var(--shadow);transition:transform .18s,border-color .18s,background .18s,box-shadow .18s;
+    animation:pop .3s ease both;overflow:hidden}
+  .card::after{content:"";position:absolute;inset:0 0 auto;height:2px;opacity:.55;
+    background:linear-gradient(90deg,transparent,currentColor,transparent);color:var(--line-strong)}
+  @keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  @media(hover:hover){
+    .card:hover{transform:translateY(-3px);border-color:var(--line-strong);background:var(--card-hover);
+      box-shadow:0 20px 40px rgba(0,0,0,.20)}
+    :root[data-theme="light"] .card:hover,:root:not([data-theme]) .card:hover{box-shadow:0 18px 34px rgba(26,42,90,.14)}
+  }
+  .card-top{display:flex;align-items:flex-start;gap:10px}
+  .tile{flex:0 0 auto;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:800;color:#fff;letter-spacing:.5px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 14px rgba(0,0,0,.18)}
+  .tile.tf{background:var(--tf-btn)}
+  .tile.free{background:var(--free-btn)}
+  .tile.deal{background:var(--deal-btn)}
+  .titlewrap{flex:1;min-width:0}
+  .card h2{font-size:15.5px;font-weight:700;line-height:1.35;letter-spacing:.2px;word-break:break-word}
+  .badge{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.4px;padding:3.5px 9px;border-radius:999px;
+    white-space:nowrap;border:1px solid transparent;margin-top:1px}
+  .badge.tf{color:var(--tf);background:var(--tf-bg);border-color:var(--tf-bd)}
+  .badge.free{color:var(--free);background:var(--free-bg);border-color:var(--free-bd)}
+  .badge.deal{color:var(--deal);background:var(--deal-bg);border-color:var(--deal-bd)}
+  .desc{font-size:12.8px;color:var(--desc);line-height:1.62}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:auto;padding-top:2px}
+  .meta span{font-size:10.8px;color:var(--meta);background:var(--chip);border:1px solid var(--chip-border);
     padding:3px 8px;border-radius:7px;white-space:nowrap}
-  .price{display:flex;align-items:baseline;gap:7px;font-size:12.5px;color:var(--dim)}
-  .price s{color:#7b87a2;text-decoration-color:rgba(255,120,120,.6)}
-  .price b{font-size:15px;color:#fff;letter-spacing:.2px}
+  .price{display:flex;align-items:baseline;gap:7px;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+  .price s{color:var(--dim2);text-decoration-color:var(--strike)}
+  .price b{font-size:15.5px;color:var(--txt);letter-spacing:.2px;font-weight:800}
   .price b.zero{color:var(--tf)}
-  .go{margin-top:8px;display:block;text-align:center;padding:10px 12px;border-radius:12px;font-size:13.5px;font-weight:600;
-    text-decoration:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);transition:.16s}
-  .go:hover{background:rgba(255,255,255,.15)}
-  .go.tf{background:linear-gradient(135deg,#1f9d6b,#2fbf8c);border-color:transparent;box-shadow:0 8px 20px rgba(26,160,110,.28)}
-  .go.free{background:linear-gradient(135deg,#7c5cf0,#a06bff);border-color:transparent;box-shadow:0 8px 20px rgba(124,92,240,.28)}
-  .go.deal{background:linear-gradient(135deg,#e09f1f,#e2683a);border-color:transparent;box-shadow:0 8px 20px rgba(224,130,45,.28)}
-  .go:hover{filter:brightness(1.08)}
-  .empty{grid-column:1/-1;text-align:center;color:var(--dim2);font-size:13.5px;padding:44px 10px;
-    border:1px dashed var(--line);border-radius:18px}
+  .price .tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;
+    color:var(--tf);background:var(--tf-bg);border:1px solid var(--tf-bd)}
+  .price .tag.deal{color:var(--deal);background:var(--deal-bg);border-color:var(--deal-bd)}
+  .go{margin-top:6px;display:flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:10px 12px;
+    border-radius:13px;font-size:13.5px;font-weight:650;text-decoration:none;color:#fff;
+    background:var(--tab-on);border:1px solid transparent;transition:filter .16s,transform .16s;letter-spacing:.3px}
+  .go.tf{background:var(--tf-btn);box-shadow:0 8px 20px var(--tf-shadow)}
+  .go.free{background:var(--free-btn);box-shadow:0 8px 20px var(--free-shadow)}
+  .go.deal{background:var(--deal-btn);box-shadow:0 8px 20px var(--deal-shadow)}
+  @media(hover:hover){.go:hover{filter:brightness(1.07)}}
+  .go:active{transform:scale(.985)}
+  .go svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4;opacity:.9}
+
+  .empty{grid-column:1/-1;text-align:center;color:var(--dim2);font-size:13.5px;padding:44px 16px;
+    border:1px dashed var(--line);border-radius:20px;background:var(--chip)}
+  .empty b{display:block;color:var(--txt);font-size:14.5px;margin-bottom:6px;font-weight:700}
+  .empty .retry{margin-top:14px;min-height:40px;padding:9px 18px;border-radius:999px;border:1px solid var(--line);
+    background:var(--tab-on);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .retry:active{transform:scale(.97)}
+  .skel{height:196px;border-radius:20px;border:1px solid var(--line);
+    background:var(--skeleton);background-size:400% 100%;animation:shimmer 1.4s ease-in-out infinite}
+  @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
 
   footer{margin-top:34px;text-align:center;color:var(--dim2);font-size:11.5px;line-height:1.9;letter-spacing:.3px}
-  footer a{color:#9fb0d4;text-decoration:none;border-bottom:1px dotted rgba(159,176,212,.5)}  footer .note{max-width:640px;margin:0 auto 12px;color:#7d89a5}
-  .toTop{display:inline-block;margin-top:10px;font-size:11.5px}
+  footer .note{max-width:640px;margin:0 auto 12px;color:var(--dim)}
+  footer a{color:var(--cta);text-decoration:none;border-bottom:1px dotted var(--line-strong)}
+  .toTop{display:inline-flex;align-items:center;gap:4px;margin-top:12px;min-height:34px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body>
+<body id="top">
 <div class="wrap">
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="切换主题：自动">
+    <span class="ico" aria-hidden="true">🌓</span><span class="lbl">自动</span>
+  </button>
+
   <header>
     <span class="eyebrow"><i></i>iOS ONLY · 逐条核实</span>
     <h1>Jenning 的应用雷达</h1>
-    <p>TestFlight 开放名额 · App Store 限免 · 降价</p>
+    <p class="sub">TestFlight 开放名额 · App Store 限免 · 降价</p>
     <div class="stamp">
-      <span>最近核实 <b>2026-11-23 20:50</b></span>
-      <span>TF 名额 <b id="n-tf">–</b></span>
-      <span>限免 <b id="n-free">–</b></span>
-      <span>降价 <b id="n-deal">–</b></span>
+      <span>最近核实 <b id="stamp-time">–</b></span>
+      <span><i class="dot" style="background:var(--tf)"></i>TF 名额 <b id="n-tf">–</b></span>
+      <span><i class="dot" style="background:var(--free)"></i>限免 <b id="n-free">–</b></span>
+      <span><i class="dot" style="background:var(--deal)"></i>降价 <b id="n-deal">–</b></span>
     </div>
   </header>
 
   <div class="controls">
     <div class="controls-inner">
       <div class="tabs" role="tablist" aria-label="分类筛选">
-        <button role="tab" data-cat="all" aria-selected="true">全部<em id="c-all">–</em></button>
-        <button role="tab" data-cat="tf" aria-selected="false">TF 名额<em id="c-tf">–</em></button>
-        <button role="tab" data-cat="free" aria-selected="false">限免<em id="c-free">–</em></button>
-        <button role="tab" data-cat="deal" aria-selected="false">降价<em id="c-deal">–</em></button>
+        <button role="tab" data-cat="all" aria-selected="true" type="button">全部<em id="c-all">–</em></button>
+        <button role="tab" data-cat="tf" aria-selected="false" type="button">TF 名额<em id="c-tf">–</em></button>
+        <button role="tab" data-cat="free" aria-selected="false" type="button">限免<em id="c-free">–</em></button>
+        <button role="tab" data-cat="deal" aria-selected="false" type="button">降价<em id="c-deal">–</em></button>
       </div>
       <label class="search" aria-label="搜索应用">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
@@ -133,111 +301,225 @@
   </div>
 
   <main>
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="grid" aria-live="polite"></div>
   </main>
 
   <footer>
     <div class="note">本站只收 iOS（iPhone / iPad）应用。TestFlight 名额与 App Store 价格均以 Apple 页面实时显示为准：名额随时可能满员，限免与降价随时可能恢复原价，点开按钮后先看页面价格再决定。</div>
-    <div>TestFlight 名额核实于 2026-11-23 20:50 · App Store 价格用 Apple 官方接口核实于同一时间（中国区，¥）</div>
+    <div>TestFlight 名额与 App Store 价格（中国区，¥）核实于 <span id="foot-time">–</span>，由 GitHub Actions 自动更新</div>
     <div>© 2026 Jenning Ko · jenning.ipv64.de</div>
     <a class="toTop" href="#top">回到顶部 ↑</a>
   </footer>
 </div>
 
 <script>
-/* 每条都在 2026-11-23 20:50 (UTC+8) 实打开链接 / 调用 Apple 接口核实过 */
-const ITEMS = [
-  /* ---------- TestFlight 名额（iOS） ---------- */
-  {cat:'tf', name:'DeepPilot', desc:'给 DeepSeek Harness 做的原生 iOS 客户端：在 iPhone 上看项目、会话与 Agent 的实时输出，Agent 要批准或提问时直接在手机上处理，支持锁屏推送。', badge:'TF 开放中', plat:['iPhone'], note:'需自建 DSH 并装桥接插件，无法独立使用', url:'https://testflight.apple.com/join/JHb4j5DV', btn:'前往 TestFlight'},
-  {cat:'tf', name:'cuebo: AI Agent Workspace', desc:'在手机上跑 agent 的内测版：自己建 Agent、接入自己的模型服务商，聊天、浏览网页、改图，并用卡片查看结构化结果。', badge:'TF 开放中', plat:['iPhone','iOS 17+'], note:'部分功能需自备模型 API Key', url:'https://testflight.apple.com/join/WUPfjzh2', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Lenna · 影视库播放器', desc:'为 NAS 影视库做的播放器：同时管理多个 Emby / Jellyfin 服务器，海报墙、快速搜索，播放支持 4K、HDR10+、杜比视界、画中画、DLNA 投屏，进度可同步 iCloud 与 Trakt。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'不自带片源，需连自己的服务器', url:'https://testflight.apple.com/join/bExxpaX1', btn:'前往 TestFlight'},
-  {cat:'tf', name:'CapyPlayer · NAS 视频播放器', desc:'为 Emby、Plex、Jellyfin 用户做的客户端：连上家里的媒体服务器后自动同步媒体库，海报墙加流畅串流播放。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'Emby / Plex / Jellyfin', url:'https://testflight.apple.com/join/r3b5ZMVH', btn:'前往 TestFlight'},
-  {cat:'tf', name:'VLC media player', desc:'手机上的经典全格式播放器，绝大多数格式直接播不用转码，ASS / SSA 字幕完整支持，还能连 SMB、FTP、UPnP 等共享直接看片。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'老牌开源播放器', url:'https://testflight.apple.com/join/q6gm0qgr', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Headroom · 自托管音乐', desc:'自己服务器的音乐、有声书和播客播放器：连 Jellyfin、Emby、Plex、OpenSubsonic / Navidrome 或 Audiobookshelf，无缝播放、ReplayGain、参数均衡器与 AutoEQ。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'自托管党友好', url:'https://testflight.apple.com/join/UH3Cfhds', btn:'前往 TestFlight'},
-  {cat:'tf', name:'DS Music · 群晖 NAS 音乐', desc:'连群晖 Audio Station 播放自己音乐库的客户端：浏览库、播放列表、队列、同步歌词，支持离线收听。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'需群晖 NAS', url:'https://testflight.apple.com/join/A4iGyH2H', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Cs Music Pro', desc:'Cs Music 系列音乐播放器的内测版，这一版主要更新播放列表排序与「正在播放」页的呈现逻辑。', badge:'TF 开放中', plat:['iPhone'], note:'本地音乐播放器', url:'https://testflight.apple.com/join/dU2r1pkq', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Yattee', desc:'开源视频播放器：本地与远程视频都能播，可选 MPV 或 AVPlayer 内核，可直接读「文件」App 里的视频。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'可自填播放器内核', url:'https://testflight.apple.com/join/jTWDHuZE', btn:'前往 TestFlight'},
-  {cat:'tf', name:'MiniBili · 哔哩哔哩第三方', desc:'第三方的 B 站客户端，轻量浏览与播放，详细说明见开发者站点。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'第三方客户端，登录与数据以官方为准', url:'https://testflight.apple.com/join/TgcHSGwb', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Mons · SSH & Agent 终端', desc:'iPhone 与 iPad 上的远程终端：SSH 连自己的电脑，接上已有的 tmux / Herdr 会话，在手机上直接跟跑在主机上的编程 Agent 交互。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'这一版主测连接稳定性与终端渲染', url:'https://testflight.apple.com/join/QrKBvj5S', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Anvil · 端侧离线 AI', desc:'跑在 iPhone 本机上的私人 AI 助手：离线聊天、处理文档与笔记、语音模式，还能用本机模型生成图片，不用账号。', badge:'TF 开放中', plat:['iPhone'], note:'模型在本地运行', url:'https://testflight.apple.com/join/5JGCZpxt', btn:'前往 TestFlight'},
-  {cat:'tf', name:'PCalc', desc:'老牌科学计算器 PCalc 的 TestFlight 版，想提前用新版本、并且愿意顺手报 bug 的话可以上车。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'经典付费计算器', url:'https://testflight.apple.com/join/qCCdSLT1', btn:'前往 TestFlight'},
-  {cat:'tf', name:'OldOS 17', desc:'把老 iOS 界面搬到现代设备上的 OldOS 系列，这次放的是 iOS 17 版本，纯怀旧向。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'怀旧 / 折腾向', url:'https://testflight.apple.com/join/VNduyVTG', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Cuterdio · 网络电台', desc:'网络电台播放器回来了：3.0 版重做界面，加了睡眠定时与闹钟，适合当床头收音机。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'Internet Radio', url:'https://testflight.apple.com/join/3zVoYTjL', btn:'前往 TestFlight'},
-  {cat:'tf', name:'Vocabry 词绘 · 看图背单词', desc:'一个词配一幅插画背单词：从基础 850 核心词开始，或先做 2 分钟定级测试，用 FSRS 间隔复习，无账号无广告。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'不上架中国区，需非国区 Apple ID', url:'https://testflight.apple.com/join/XbD3fG7S', btn:'前往 TestFlight'},
+(function(){
+  'use strict';
 
-  /* ---------- 限免（付费 → 免费） ---------- */
-  {cat:'free', name:'Chordyne', desc:'左手选和弦、右手弹旋律的编曲工具，按下的音都落在当前和弦里，还能带上贝斯、鼓点和琶音，适合随手记旋律。', badge:'限免中', plat:['iPhone','iPad'], was:'¥38', now:'免费', url:'https://apps.apple.com/cn/app/chordyne/id6791322417', btn:'去 App Store 领取'},
-  {cat:'free', name:'SketchClub：绘画与素描', desc:'iPhone 和 iPad 上素描、绘画与修图，带图层、画笔和矢量工具，能记录绘画过程并导出，社区还有每日挑战。', badge:'限免中', plat:['iPhone','iPad'], was:'¥22', now:'免费', url:'https://apps.apple.com/cn/app/sketchclub-%E7%BB%98%E7%94%BB%E4%B8%8E%E7%B4%A0%E6%8F%8F/id404414176', btn:'去 App Store 领取'},
-  {cat:'free', name:'iCleanShot · 懒人相册清理', desc:'用「滑动」的极简方式给相册瘦身，照片一多又懒得整理的时候很好用。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/icleanshot-%E6%87%92%E4%BA%BA%E4%B8%93%E7%94%A8/id6756064954', btn:'去 App Store 领取'},
-  {cat:'free', name:'Tapewind · 磁带播放器', desc:'把音乐库播成一台复古磁带机：每张专辑、每个歌单都变成一盘 A/B 面磁带，带记忆播放进度。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/tapewind-cassette-player/id6819736826', btn:'去 App Store 领取'},
-  {cat:'free', name:'My Saved Places', desc:'用搜索、地图选点或坐标保存想去的地点，出门时一键在各自的地图或导航 App 里打开。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/my-saved-places/id6767223800', btn:'去 App Store 领取'},
-  {cat:'free', name:'Notelo', desc:'隐私笔记：手写、文字与图片混排，文件夹加标签，支持 Apple Intelligence 相关能力，iPhone / iPad / Mac 同步。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/notelo-notizen/id6824514957', btn:'去 App Store 领取'},
+  var LABEL = {tf:'前往 TestFlight', free:'去 App Store 领取', deal:'去 App Store 看看'};
+  var ORDER = {tf:0, free:1, deal:2};
+  var grid = document.getElementById('grid');
+  var q = document.getElementById('q');
 
-  /* ---------- 降价 ---------- */
-  {cat:'deal', name:'Marvis Pro', desc:'把 Apple Music 彻底改头换面的播放器：自定义首页分区、智能排序与筛选、小组件和锁屏控件，重度听歌的人几乎人手一个。', badge:'降价中', plat:['iPhone','iPad'], was:'¥68', now:'¥38', url:'https://apps.apple.com/cn/app/marvis-pro/id1447768809', btn:'去 App Store 看看'},
-  {cat:'deal', name:'FL Studio Mobile', desc:'手机上能用的完整音乐制作工作站：多轨编曲、虚拟乐器、采样与混音，随手录想法够用。', badge:'降价中', plat:['iPhone','iPad'], was:'¥88', now:'¥44', url:'https://apps.apple.com/cn/app/fl-studio-mobile/id432850619', btn:'去 App Store 看看'},
-  {cat:'deal', name:'Be Focused Pro · 番茄钟', desc:'轻量的番茄钟与任务清单：分时段专注、统计专注时长，iPhone、iPad 与 Mac 数据同步。', badge:'降价中', plat:['iPhone','iPad'], was:'¥98', now:'¥58', url:'https://apps.apple.com/cn/app/be-focused-pro-pomodoro-timer/id953426154', btn:'去 App Store 看看'},
-  {cat:'deal', name:'好（hǎo）色相机', desc:'把眼前的颜色拍成可复用的色卡：用相机捕捉或从相册导入，取色、配色都方便。', badge:'降价中', plat:['iPhone','iPad'], was:'¥8', now:'¥3', url:'https://apps.apple.com/cn/app/%E5%A5%BD-h%C7%8Eo-%E8%89%B2%E7%9B%B8%E6%9C%BA/id1151401197', btn:'去 App Store 看看'}
-];
+  var state = {items: [], updatedAt: '', cat: 'all', loading: true, error: ''};
 
-const LABEL = {tf:'前往 TestFlight', free:'去 App Store 领取', deal:'去 App Store 看看'};
-const grid = document.getElementById('grid');
-const q = document.getElementById('q');
-let cat = 'all';
+  /* ---------- 主题 ---------- */
+  var THEMES = ['auto', 'light', 'dark'];
+  var THEME_META = {
+    auto:  {ico:'🌓', label:'自动', aria:'切换主题：当前自动跟随系统，点击切换为浅色'},
+    light: {ico:'☀️', label:'浅色', aria:'切换主题：当前浅色，点击切换为深色'},
+    dark:  {ico:'🌙', label:'深色', aria:'切换主题：当前深色，点击切回自动跟随系统'}
+  };
+  var themeBtn = document.getElementById('themeBtn');
 
-function money(it){
-  if(it.cat === 'tf'){
-    return '<div class="price"><span>公开链接 · 名额有限</span></div>';
+  function getStoredTheme(){
+    try{
+      var t = localStorage.getItem('jr-theme');
+      return (t === 'light' || t === 'dark') ? t : 'auto';
+    }catch(e){ return 'auto'; }
   }
-  const zero = it.now === '免费';
-  return '<div class="price"><s>' + it.was + '</s><span>→</span><b class="' + (zero ? 'zero' : '') + '">' + it.now + '</b></div>';
-}
+  function applyTheme(mode){
+    var root = document.documentElement;
+    if(mode === 'auto') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', mode);
+    var m = THEME_META[mode];
+    themeBtn.querySelector('.ico').textContent = m.ico;
+    themeBtn.querySelector('.lbl').textContent = m.label;
+    themeBtn.setAttribute('aria-label', m.aria);
+    themeBtn.title = m.aria;
+    var dark = mode === 'dark' ||
+      (mode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute('content', dark ? '#080b16' : '#f4f6fb');
+  }
+  themeBtn.addEventListener('click', function(){
+    var next = THEMES[(THEMES.indexOf(getStoredTheme()) + 1) % THEMES.length];
+    try{
+      if(next === 'auto') localStorage.removeItem('jr-theme');
+      else localStorage.setItem('jr-theme', next);
+    }catch(e){}
+    applyTheme(next);
+  });
+  applyTheme(getStoredTheme());
+  if(window.matchMedia){
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onChange = function(){ if(getStoredTheme() === 'auto') applyTheme('auto'); };
+    if(mq.addEventListener) mq.addEventListener('change', onChange);
+    else if(mq.addListener) mq.addListener(onChange);
+  }
 
-function card(it){
-  const plats = it.plat.map(p => '<span>' + p + '</span>').join('');
-  const cls = it.cat;
-  const note = it.note ? '<span>' + it.note + '</span>' : '';
-  return '<article class="card" data-cat="' + cls + '">' +
-    '<div class="card-top"><h2>' + it.name + '</h2><span class="badge ' + cls + '">' + it.badge + '</span></div>' +
-    '<p class="desc">' + it.desc + '</p>' +
-    money(it) +
-    '<div class="meta">' + plats + note + '<span>核实 11-23</span></div>' +
-    '<a class="go ' + cls + '" href="' + it.url + '" target="_blank" rel="noopener noreferrer">' + it.btn + ' ↗</a>' +
+  /* ---------- 工具 ---------- */
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function money(n){
+    if(n === 0) return '免费';
+    var v = Number(n);
+    if(!isFinite(v)) return '–';
+    return '¥' + (Number.isInteger(v) ? v : v.toFixed(2));
+  }
+  function shortDate(s){
+    var m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})/);
+    if(!m) return s || '–';
+    return m[2] + '-' + m[3];
+  }
+  function fullStamp(s){
+    var m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}:\d{2})?/);
+    if(!m) return s || '–';
+    return m[1] + '-' + m[2] + '-' + m[3] + (m[4] ? ' ' + m[4] : '');
+  }
+
+  /* ---------- 渲染 ---------- */
+  function priceBlock(it){
+    if(it.type === 'tf'){
+      return '<div class="price"><span>公开链接 · 名额有限</span></div>';
+    }
+    var was = Number(it.price_was), now = Number(it.price_now);
+    var hasWas = it.price_was !== null && it.price_was !== undefined && isFinite(was);
+    var save = (hasWas && isFinite(now) && was > now) ? (was - now) : 0;
+    var tag = it.type === 'free'
+      ? '<span class="tag">省 ' + money(save) + '</span>'
+      : '<span class="tag deal">省 ' + money(save) + '</span>';
+    return '<div class="price">' +
+      (hasWas ? '<s>' + money(was) + '</s><span>→</span>' : '') +
+      '<b class="' + (now === 0 ? 'zero' : '') + '">' + money(now) + '</b>' +
+      (save > 0 ? tag : '') + '</div>';
+  }
+
+  function card(it){
+    var type = it.type;
+    var plats = (it.plat || []).map(function(p){ return '<span>' + esc(p) + '</span>'; }).join('');
+    var note = it.note ? '<span>' + esc(it.note) + '</span>' : '';
+    var badge = it.badge || ({tf:'TF 开放中', free:'限免中', deal:'降价中'})[type] || '';
+    var btn = it.btn || LABEL[type] || '打开';
+    var name = String(it.name || '');
+    var initial = name ? name.slice(0, 1).toUpperCase() : '·';
+    return '<article class="card" data-cat="' + esc(type) + '">' +
+      '<div class="card-top">' +
+        '<span class="tile ' + esc(type) + '" aria-hidden="true">' + esc(initial) + '</span>' +
+        '<div class="titlewrap"><h2>' + esc(name) + '</h2></div>' +
+        '<span class="badge ' + esc(type) + '">' + esc(badge) + '</span>' +
+      '</div>' +
+      '<p class="desc">' + esc(it.desc) + '</p>' +
+      priceBlock(it) +
+      '<div class="meta">' + plats + note + '<span>核实 ' + esc(shortDate(state.updatedAt)) + '</span></div>' +
+      '<a class="go ' + esc(type) + '" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">' +
+        esc(btn) +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg>' +
+      '</a>' +
     '</article>';
-}
-
-function render(){
-  const kw = q.value.trim().toLowerCase();
-  const list = ITEMS.filter(function(it){
-    if(cat !== 'all' && it.cat !== cat) return false;
-    if(!kw) return true;
-    return (it.name + ' ' + it.desc + ' ' + (it.note || '') + ' ' + it.plat.join(' ')).toLowerCase().indexOf(kw) >= 0;
-  });
-  grid.innerHTML = list.length
-    ? list.map(card).join('')
-    : '<div class="empty">没有匹配的条目，换个关键词试试</div>';
-  document.querySelectorAll('.tabs button').forEach(function(b){
-    b.setAttribute('aria-selected', String(b.dataset.cat === cat));
-  });
-}
-
-function counts(){
-  const c = {all: ITEMS.length, tf: 0, free: 0, deal: 0};
-  ITEMS.forEach(function(it){ c[it.cat]++; });
-  for(const k in c){
-    const el = document.getElementById('c-' + k);
-    if(el) el.textContent = c[k];
-    const nb = document.getElementById('n-' + k);
-    if(nb) nb.textContent = c[k];
   }
-}
 
-document.querySelectorAll('.tabs button').forEach(function(b){
-  b.addEventListener('click', function(){ cat = b.dataset.cat; render(); });
-});
-q.addEventListener('input', render);
-counts();
-render();
+  function visibleItems(){
+    var kw = q.value.trim().toLowerCase();
+    return state.items.filter(function(it){
+      if(state.cat !== 'all' && it.type !== state.cat) return false;
+      if(!kw) return true;
+      var hay = [it.name, it.desc, it.note, (it.plat || []).join(' '), it.badge].join(' ');
+      return hay.toLowerCase().indexOf(kw) >= 0;
+    });
+  }
+
+  function render(){
+    if(state.loading){
+      grid.innerHTML = Array(6).fill('<div class="skel"></div>').join('');
+      return;
+    }
+    if(state.error){
+      grid.innerHTML = '<div class="empty"><b>数据没能加载出来</b>' + esc(state.error) +
+        '<br>可能是刚更新、Pages 还没部署完，稍等一下再试。' +
+        '<br><button class="retry" type="button" id="retryBtn">重新加载</button></div>';
+      var r = document.getElementById('retryBtn');
+      if(r) r.addEventListener('click', load);
+      return;
+    }
+    var list = visibleItems();
+    if(!list.length){
+      grid.innerHTML = '<div class="empty"><b>没有匹配的条目</b>换个关键词，或者切到「全部」看看</div>';
+      return;
+    }
+    grid.innerHTML = list.map(card).join('');
+  }
+
+  function counts(){
+    var c = {all: state.items.length, tf: 0, free: 0, deal: 0};
+    state.items.forEach(function(it){ if(c[it.type] != null) c[it.type]++; });
+    Object.keys(c).forEach(function(k){
+      var el = document.getElementById('c-' + k);
+      if(el) el.textContent = c[k];
+      var nb = document.getElementById('n-' + k);
+      if(nb) nb.textContent = c[k];
+    });
+    document.getElementById('stamp-time').textContent = fullStamp(state.updatedAt);
+    document.getElementById('foot-time').textContent = fullStamp(state.updatedAt);
+    document.querySelector('.tabs button[data-cat="' + state.cat + '"]').setAttribute('aria-selected','true');
+  }
+
+  document.querySelectorAll('.tabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      state.cat = b.dataset.cat;
+      document.querySelectorAll('.tabs button').forEach(function(x){
+        x.setAttribute('aria-selected', String(x.dataset.cat === state.cat));
+      });
+      render();
+    });
+  });
+  q.addEventListener('input', render);
+  q.addEventListener('search', render);
+
+  /* ---------- 数据 ---------- */
+  function load(){
+    state.loading = true; state.error = '';
+    render();
+    fetch('./data.json?t=' + Date.now(), {cache:'no-store'})
+      .then(function(res){
+        if(!res.ok) throw new Error('读取 data.json 失败（HTTP ' + res.status + '）');
+        return res.json();
+      })
+      .then(function(data){
+        if(!data || !Array.isArray(data.items)) throw new Error('data.json 格式不对');
+        state.items = data.items.filter(function(it){ return it && it.type && it.name && it.url; })
+          .sort(function(a, b){
+            var ra = ORDER[a.type] === undefined ? 9 : ORDER[a.type];
+            var rb = ORDER[b.type] === undefined ? 9 : ORDER[b.type];
+            return ra - rb;
+          });
+        state.updatedAt = data.updated_at || '';
+        state.loading = false;
+        counts(); render();
+      })
+      .catch(function(err){
+        state.loading = false;
+        state.error = err && err.message ? err.message : String(err);
+        render();
+      });
+  }
+
+  counts();
+  load();
+})();
 </script>
 </body>
 </html>

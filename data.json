@@ -1,0 +1,338 @@
+{
+  "updated_at": "2026-11-23 21:22",
+  "items": [
+    {
+      "type": "tf",
+      "name": "DeepPilot",
+      "desc": "给 DeepSeek Harness 做的原生 iOS 客户端：在 iPhone 上看项目、会话与 Agent 的实时输出，Agent 要批准或提问时直接在手机上处理，支持锁屏推送。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone"
+      ],
+      "note": "需自建 DSH 并装桥接插件，无法独立使用",
+      "url": "https://testflight.apple.com/join/JHb4j5DV"
+    },
+    {
+      "type": "tf",
+      "name": "cuebo: AI Agent Workspace",
+      "desc": "在手机上跑 agent 的内测版：自己建 Agent、接入自己的模型服务商，聊天、浏览网页、改图，并用卡片查看结构化结果。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iOS 17+"
+      ],
+      "note": "部分功能需自备模型 API Key",
+      "url": "https://testflight.apple.com/join/WUPfjzh2"
+    },
+    {
+      "type": "tf",
+      "name": "Lenna · 影视库播放器",
+      "desc": "为 NAS 影视库做的播放器：同时管理多个 Emby / Jellyfin 服务器，海报墙、快速搜索，播放支持 4K、HDR10+、杜比视界、画中画、DLNA 投屏，进度可同步 iCloud 与 Trakt。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad",
+        "Apple TV"
+      ],
+      "note": "不自带片源，需连自己的服务器",
+      "url": "https://testflight.apple.com/join/bExxpaX1"
+    },
+    {
+      "type": "tf",
+      "name": "CapyPlayer · NAS 视频播放器",
+      "desc": "为 Emby、Plex、Jellyfin 用户做的客户端：连上家里的媒体服务器后自动同步媒体库，海报墙加流畅串流播放。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "Emby / Plex / Jellyfin",
+      "url": "https://testflight.apple.com/join/r3b5ZMVH"
+    },
+    {
+      "type": "tf",
+      "name": "VLC media player",
+      "desc": "手机上的经典全格式播放器，绝大多数格式直接播不用转码，ASS / SSA 字幕完整支持，还能连 SMB、FTP、UPnP 等共享直接看片。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad",
+        "Apple TV"
+      ],
+      "note": "老牌开源播放器",
+      "url": "https://testflight.apple.com/join/q6gm0qgr"
+    },
+    {
+      "type": "tf",
+      "name": "Headroom · 自托管音乐",
+      "desc": "自己服务器的音乐、有声书和播客播放器：连 Jellyfin、Emby、Plex、OpenSubsonic / Navidrome 或 Audiobookshelf，无缝播放、ReplayGain、参数均衡器与 AutoEQ。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "自托管党友好",
+      "url": "https://testflight.apple.com/join/UH3Cfhds"
+    },
+    {
+      "type": "tf",
+      "name": "DS Music · 群晖 NAS 音乐",
+      "desc": "连群晖 Audio Station 播放自己音乐库的客户端：浏览库、播放列表、队列、同步歌词，支持离线收听。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad",
+        "Apple TV"
+      ],
+      "note": "需群晖 NAS",
+      "url": "https://testflight.apple.com/join/A4iGyH2H"
+    },
+    {
+      "type": "tf",
+      "name": "Cs Music Pro",
+      "desc": "Cs Music 系列音乐播放器的内测版，这一版主要更新播放列表排序与「正在播放」页的呈现逻辑。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone"
+      ],
+      "note": "本地音乐播放器",
+      "url": "https://testflight.apple.com/join/dU2r1pkq"
+    },
+    {
+      "type": "tf",
+      "name": "Yattee",
+      "desc": "开源视频播放器：本地与远程视频都能播，可选 MPV 或 AVPlayer 内核，可直接读「文件」App 里的视频。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad",
+        "Apple TV"
+      ],
+      "note": "可自填播放器内核",
+      "url": "https://testflight.apple.com/join/jTWDHuZE"
+    },
+    {
+      "type": "tf",
+      "name": "MiniBili · 哔哩哔哩第三方",
+      "desc": "第三方的 B 站客户端，轻量浏览与播放，详细说明见开发者站点。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "第三方客户端，登录与数据以官方为准",
+      "url": "https://testflight.apple.com/join/TgcHSGwb"
+    },
+    {
+      "type": "tf",
+      "name": "Mons · SSH & Agent 终端",
+      "desc": "iPhone 与 iPad 上的远程终端：SSH 连自己的电脑，接上已有的 tmux / Herdr 会话，在手机上直接跟跑在主机上的编程 Agent 交互。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "这一版主测连接稳定性与终端渲染",
+      "url": "https://testflight.apple.com/join/QrKBvj5S"
+    },
+    {
+      "type": "tf",
+      "name": "Anvil · 端侧离线 AI",
+      "desc": "跑在 iPhone 本机上的私人 AI 助手：离线聊天、处理文档与笔记、语音模式，还能用本机模型生成图片，不用账号。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone"
+      ],
+      "note": "模型在本地运行",
+      "url": "https://testflight.apple.com/join/5JGCZpxt"
+    },
+    {
+      "type": "tf",
+      "name": "PCalc",
+      "desc": "老牌科学计算器 PCalc 的 TestFlight 版，想提前用新版本、并且愿意顺手报 bug 的话可以上车。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "经典付费计算器",
+      "url": "https://testflight.apple.com/join/qCCdSLT1"
+    },
+    {
+      "type": "tf",
+      "name": "OldOS 17",
+      "desc": "把老 iOS 界面搬到现代设备上的 OldOS 系列，这次放的是 iOS 17 版本，纯怀旧向。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "怀旧 / 折腾向",
+      "url": "https://testflight.apple.com/join/VNduyVTG"
+    },
+    {
+      "type": "tf",
+      "name": "Cuterdio · 网络电台",
+      "desc": "网络电台播放器回来了：3.0 版重做界面，加了睡眠定时与闹钟，适合当床头收音机。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "Internet Radio",
+      "url": "https://testflight.apple.com/join/3zVoYTjL"
+    },
+    {
+      "type": "tf",
+      "name": "Vocabry 词绘 · 看图背单词",
+      "desc": "一个词配一幅插画背单词：从基础 850 核心词开始，或先做 2 分钟定级测试，用 FSRS 间隔复习，无账号无广告。",
+      "badge": "TF 开放中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "不上架中国区，需非国区 Apple ID",
+      "url": "https://testflight.apple.com/join/XbD3fG7S"
+    },
+    {
+      "type": "free",
+      "name": "Chordyne",
+      "desc": "左手选和弦、右手弹旋律的编曲工具，按下的音都落在当前和弦里，还能带上贝斯、鼓点和琶音，适合随手记旋律。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/chordyne/id6791322417",
+      "app_id": 6791322417,
+      "price_was": 38,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "SketchClub：绘画与素描",
+      "desc": "iPhone 和 iPad 上素描、绘画与修图，带图层、画笔和矢量工具，能记录绘画过程并导出，社区还有每日挑战。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/sketchclub-%E7%BB%98%E7%94%BB%E4%B8%8E%E7%B4%A0%E6%8F%8F/id404414176",
+      "app_id": 404414176,
+      "price_was": 22,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "iCleanShot - 懒人专用",
+      "desc": "用「滑动」的极简方式给相册瘦身，照片一多又懒得整理的时候很好用。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/icleanshot-%E6%87%92%E4%BA%BA%E4%B8%93%E7%94%A8/id6756064954",
+      "app_id": 6756064954,
+      "price_was": 8,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Tapewind: Cassette Player",
+      "desc": "把音乐库播成一台复古磁带机：每张专辑、每个歌单都变成一盘 A/B 面磁带，带记忆播放进度。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/tapewind-cassette-player/id6819736826",
+      "app_id": 6819736826,
+      "price_was": 8,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "My Saved Places",
+      "desc": "用搜索、地图选点或坐标保存想去的地点，出门时一键在各自的地图或导航 App 里打开。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/my-saved-places/id6767223800",
+      "app_id": 6767223800,
+      "price_was": 8,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Notelo: Notizen",
+      "desc": "隐私笔记：手写、文字与图片混排，文件夹加标签，支持 Apple Intelligence 相关能力，iPhone / iPad / Mac 同步。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/notelo-notizen/id6824514957",
+      "app_id": 6824514957,
+      "price_was": 8,
+      "price_now": 0
+    },
+    {
+      "type": "deal",
+      "name": "Marvis Pro",
+      "desc": "把 Apple Music 彻底改头换面的播放器：自定义首页分区、智能排序与筛选、小组件和锁屏控件，重度听歌的人几乎人手一个。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/marvis-pro/id1447768809",
+      "app_id": 1447768809,
+      "price_was": 68,
+      "price_now": 38.0
+    },
+    {
+      "type": "deal",
+      "name": "FL Studio Mobile",
+      "desc": "手机上能用的完整音乐制作工作站：多轨编曲、虚拟乐器、采样与混音，随手录想法够用。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/fl-studio-mobile/id432850619",
+      "app_id": 432850619,
+      "price_was": 88,
+      "price_now": 44.0
+    },
+    {
+      "type": "deal",
+      "name": "Be Focused Pro: Pomodoro Timer",
+      "desc": "轻量的番茄钟与任务清单：分时段专注、统计专注时长，iPhone、iPad 与 Mac 数据同步。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/be-focused-pro-pomodoro-timer/id953426154",
+      "app_id": 953426154,
+      "price_was": 98,
+      "price_now": 58.0
+    },
+    {
+      "type": "deal",
+      "name": "好(hǎo)色相机",
+      "desc": "把眼前的颜色拍成可复用的色卡：用相机捕捉或从相册导入，取色、配色都方便。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "url": "https://apps.apple.com/cn/app/%E5%A5%BD-h%C7%8Eo-%E8%89%B2%E7%9B%B8%E6%9C%BA/id1151401197",
+      "app_id": 1151401197,
+      "price_was": 8,
+      "price_now": 3.0
+    }
+  ]
+}
