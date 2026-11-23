@@ -2,394 +2,243 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Jenning 的游戏屋 · jenning.ipv64.de</title>
-<meta name="description" content="贪吃蛇 · 2048 · 扫雷，打开就玩">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenning 的应用雷达 · iOS TestFlight 名额 & 限免降价</title>
+<meta name="description" content="只收 iOS：TestFlight 开放名额、App Store 限免与降价，逐条核实后收录。最近核实：2026-11-23。">
+<meta name="theme-color" content="#0b0e1d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%A1%3C/text%3E%3C/svg%3E">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-    color:#eef2fa; min-height:100vh; padding:30px 14px 44px; overflow-x:hidden;
-    background:linear-gradient(165deg,#0b0e1d 0%,#101736 55%,#0b0e1d 100%); }
-  body::before, body::after { content:""; position:fixed; border-radius:50%; filter:blur(70px); z-index:-1; opacity:.55; }
-  body::before { width:340px; height:340px; left:-90px; top:-70px; background:#5845e8; animation:drift 13s ease-in-out infinite alternate; }
-  body::after { width:380px; height:380px; right:-110px; bottom:-90px; background:#c22a72; animation:drift 17s ease-in-out infinite alternate-reverse; }
-  @keyframes drift { from{ transform:translate(0,0) scale(1);} to{ transform:translate(46px,30px) scale(1.12);} }
-  main { max-width:440px; margin:0 auto; }
-  header { text-align:center; margin-bottom:20px; }
-  .logoRing { width:92px; height:92px; margin:0 auto; border-radius:50%;
-    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.28), rgba(255,255,255,.05) 55%);
-    border:1px solid rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center;
-    font-size:46px; box-shadow:0 14px 34px rgba(88,69,232,.45), inset 0 0 24px rgba(139,92,246,.35);
-    animation:bob 3.2s ease-in-out infinite; }
-  @keyframes bob { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
-  header h1 { font-size:29px; letter-spacing:3px; margin-top:14px; font-weight:800;
-    background:linear-gradient(90deg,#7cc4ff,#b18cff,#ff8ac2,#ffd479);
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-  header p { color:#9aa8c4; font-size:13px; margin-top:8px; letter-spacing:2px; }
-  .badges { margin-top:12px; display:flex; gap:7px; justify-content:center; }
-  .badges span { font-size:11.5px; color:#c6d2e6; background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.1); padding:5px 11px; border-radius:999px; }
-  .tabs { display:flex; gap:9px; margin:18px 0 16px; }
-  .tabs button { flex:1; padding:13px 0 11px; border-radius:16px; border:1px solid rgba(255,255,255,.09);
-    background:rgba(255,255,255,.05); color:#c6d2e6; font-size:15px; cursor:pointer;
-    backdrop-filter:blur(6px); transition:all .18s; line-height:1.3; }
-  .tabs button small { display:block; font-size:11px; opacity:.75; margin-top:2px; letter-spacing:1px; }
-  .tabs button.on { background:linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; border-color:transparent;
-    font-weight:700; box-shadow:0 10px 24px rgba(99,102,241,.5); transform:translateY(-2px); }
-  section { display:none; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09);
-    border-radius:22px; padding:17px 14px 12px; box-shadow:0 20px 44px rgba(0,0,0,.38); backdrop-filter:blur(10px); }
-  section.on { display:block; animation:fadein .25s ease; }
-  @keyframes fadein { from{ opacity:0; transform:translateY(5px);} to{ opacity:1; transform:none;} }
-  .bar { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:13px; font-size:13px; color:#aeb9cf; flex-wrap:wrap; }
-  .chip { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.09); padding:6px 12px; border-radius:999px; }
-  .chip b { color:#fff; font-size:15px; }
-  .btn { padding:9px 17px; border-radius:999px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.07);
-    color:#e8ecf4; font-size:14px; cursor:pointer; transition:transform .1s; }
-  .btn:active { transform:scale(.95); }
-  .btn.primary { background:linear-gradient(135deg,#3b82f6,#8b5cf6); border-color:transparent; color:#fff;
-    font-weight:700; box-shadow:0 6px 18px rgba(99,102,241,.45); }
-  .btn.flagon { background:linear-gradient(135deg,#e09f1f,#d63f2e); border-color:transparent; color:#fff; font-weight:700; }
-  .msg { text-align:center; min-height:22px; font-size:13.5px; color:#ffd479; margin:11px 0 4px; }
-  /* 贪吃蛇 */
-  #snakeWrap { display:flex; flex-direction:column; align-items:center; }
-  #snakeCv { background:radial-gradient(circle at 50% 38%, #111c38, #070a15); border:1px solid rgba(255,255,255,.12);
-    border-radius:18px; touch-action:none; width:340px; height:340px; max-width:88vw; max-height:88vw;
-    box-shadow:inset 0 0 44px rgba(0,0,0,.55), 0 10px 26px rgba(0,0,0,.35); }
-  .pad { display:grid; grid-template-columns:repeat(3,64px); grid-template-rows:repeat(2,52px); gap:8px; margin-top:15px; justify-content:center; }
-  .pad button { border-radius:15px; border:1px solid rgba(255,255,255,.11); background:rgba(255,255,255,.06); color:#e8ecf4; font-size:21px; cursor:pointer; }
-  .pad button:active { background:rgba(139,92,246,.45); }
-  .pad .blank { visibility:hidden; }
-  /* 2048 */
-  #g2048 { display:flex; flex-direction:column; align-items:center; }
-  #board { background:rgba(8,11,24,.8); border:1px solid rgba(255,255,255,.09); border-radius:18px; padding:10px;
-    display:grid; grid-template-columns:repeat(4,72px); grid-template-rows:repeat(4,72px); gap:10px; touch-action:none;
-    box-shadow:inset 0 0 30px rgba(0,0,0,.45); }
-  #board div { border-radius:13px; background:#232f52; display:flex; align-items:center; justify-content:center;
-    font-size:26px; font-weight:800; color:#eef2fa; text-shadow:0 1px 3px rgba(0,0,0,.35); box-shadow:0 3px 8px rgba(0,0,0,.25); }
-  #board div[data-v="2"]{background:#2e4370} #board div[data-v="4"]{background:#38608f}
-  #board div[data-v="8"]{background:#2f9e8f} #board div[data-v="16"]{background:#35b558}
-  #board div[data-v="32"]{background:#a3b521} #board div[data-v="64"]{background:#e09f1f}
-  #board div[data-v="128"]{background:#e06c1f;font-size:22px} #board div[data-v="256"]{background:#d63f2e;font-size:22px}
-  #board div[data-v="512"]{background:#b03fd6;font-size:22px} #board div[data-v="1024"]{background:#7b3fd6;font-size:19px}
-  #board div[data-v="2048"]{background:linear-gradient(135deg,#f6c453,#f64f59);font-size:19px}
-  #board div.big{font-size:17px}
-  /* 扫雷 */
-  #mineWrap { display:flex; flex-direction:column; align-items:center; }
-  #mineBoard { display:grid; grid-template-columns:repeat(9,36px); gap:4px; touch-action:manipulation; }
-  #mineBoard button { width:36px; height:36px; border-radius:10px; border:1px solid rgba(255,255,255,.11);
-    background:linear-gradient(160deg,#2d3f6e,#1d2947); color:#e8ecf4; font-size:16px; font-weight:800; cursor:pointer; padding:0;
-    box-shadow:0 2px 6px rgba(0,0,0,.3); }
-  #mineBoard button:active { transform:scale(.92); }
-  #mineBoard button.open { background:#0c1322; border-color:rgba(255,255,255,.05); box-shadow:none; }
-  #mineBoard button.boom { background:linear-gradient(160deg,#c22e28,#8c1d18); }
-  .n1{color:#6db3ff!important}.n2{color:#5fd68a!important}.n3{color:#ff7b72!important}
-  .n4{color:#c792ff!important}.n5{color:#ffb86b!important}.n6{color:#4dd0e1!important}
-  .n7{color:#f48fb1!important}.n8{color:#b0bec5!important}
-  footer { text-align:center; color:#66738f; font-size:12px; margin-top:28px; line-height:1.8; letter-spacing:.5px; }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{
+    --bg:#080b16; --card:rgba(255,255,255,.045); --line:rgba(255,255,255,.09);
+    --txt:#eef2fa; --dim:#98a5c0; --dim2:#6b7896;
+    --tf:#3ddc97; --free:#b18cff; --deal:#ffb020;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--txt);min-height:100vh;background:
+      radial-gradient(1200px 600px at 12% -8%,rgba(88,69,232,.30),transparent 60%),
+      radial-gradient(900px 520px at 92% 4%,rgba(194,42,114,.22),transparent 62%),
+      linear-gradient(170deg,#080b16 0%,#0d1330 48%,#080b16 100%);
+    background-attachment:fixed;overflow-x:hidden;padding:26px 14px 40px;line-height:1.55}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+    background-size:46px 46px;mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%);
+    -webkit-mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%)}
+  .wrap{max-width:1080px;margin:0 auto}
+
+  /* header */
+  header{text-align:center;padding:6px 0 20px}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:2.4px;color:#a9b6d4;
+    border:1px solid var(--line);background:rgba(255,255,255,.045);padding:5px 12px;border-radius:999px}
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--tf);box-shadow:0 0 10px var(--tf);display:inline-block}
+  h1{font-size:clamp(26px,7vw,40px);letter-spacing:1px;font-weight:800;margin:14px 0 8px;line-height:1.25;
+    background:linear-gradient(100deg,#7cc4ff,#b18cff 45%,#ff8ac2 75%,#ffd479);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  header p{color:var(--dim);font-size:13.5px;letter-spacing:.6px}
+  .stamp{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .stamp span{font-size:11.5px;color:#c6d2e6;background:rgba(255,255,255,.055);border:1px solid var(--line);
+    padding:5px 11px;border-radius:999px;white-space:nowrap}
+  .stamp b{color:#fff;font-weight:700}
+
+  /* controls */
+  .controls{position:sticky;top:0;z-index:20;padding:10px 0 12px;margin:6px -14px 4px;
+    background:linear-gradient(180deg,rgba(8,11,22,.94),rgba(8,11,22,.78) 70%,rgba(8,11,22,0));
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .controls-inner{max-width:1080px;margin:0 auto;padding:0 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .tabs{display:flex;gap:7px;flex:1 1 320px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{flex:0 0 auto;padding:9px 15px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:#c6d2e6;font-size:13.5px;cursor:pointer;transition:.18s;white-space:nowrap;
+    font-family:inherit}
+  .tabs button:hover{background:rgba(255,255,255,.09)}
+  .tabs button[aria-selected="true"]{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border-color:transparent;
+    font-weight:700;box-shadow:0 8px 20px rgba(99,102,241,.45)}
+  .tabs button em{font-style:normal;opacity:.7;font-size:11.5px;margin-left:4px}
+  .search{position:relative;flex:1 1 200px;min-width:150px}
+  .search input{width:100%;padding:10px 13px 10px 34px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--txt);font-size:13.5px;font-family:inherit;outline:none;transition:.18s}
+  .search input::placeholder{color:#77839e}
+  .search input:focus{border-color:rgba(139,92,246,.7);background:rgba(139,92,246,.1);box-shadow:0 0 0 3px rgba(139,92,246,.14)}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:#8b96b0;fill:none;stroke-width:2}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:10px}
+  @media(min-width:720px){.grid{grid-template-columns:1fr 1fr;gap:14px}}
+  @media(min-width:1060px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  .card{position:relative;display:flex;flex-direction:column;gap:9px;padding:15px 15px 14px;border-radius:18px;
+    background:var(--card);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 16px 34px rgba(0,0,0,.28);transition:transform .18s,border-color .18s,background .18s;
+    animation:pop .28s ease both}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.065)}
+  .card-top{display:flex;align-items:flex-start;gap:9px}
+  .card h2{font-size:16px;font-weight:700;line-height:1.35;letter-spacing:.2px;flex:1;word-break:break-word}
+  .badge{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.4px;padding:3.5px 9px;border-radius:999px;white-space:nowrap;border:1px solid transparent}
+  .badge.tf{color:var(--tf);background:rgba(61,220,151,.12);border-color:rgba(61,220,151,.3)}
+  .badge.free{color:var(--free);background:rgba(177,140,255,.14);border-color:rgba(177,140,255,.32)}
+  .badge.deal{color:var(--deal);background:rgba(255,176,32,.13);border-color:rgba(255,176,32,.32)}
+  .desc{font-size:13px;color:#c3cee2;line-height:1.62}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:auto;padding-top:4px}
+  .meta span{font-size:11px;color:#93a0bd;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+    padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .price{display:flex;align-items:baseline;gap:7px;font-size:12.5px;color:var(--dim)}
+  .price s{color:#7b87a2;text-decoration-color:rgba(255,120,120,.6)}
+  .price b{font-size:15px;color:#fff;letter-spacing:.2px}
+  .price b.zero{color:var(--tf)}
+  .go{margin-top:8px;display:block;text-align:center;padding:10px 12px;border-radius:12px;font-size:13.5px;font-weight:600;
+    text-decoration:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);transition:.16s}
+  .go:hover{background:rgba(255,255,255,.15)}
+  .go.tf{background:linear-gradient(135deg,#1f9d6b,#2fbf8c);border-color:transparent;box-shadow:0 8px 20px rgba(26,160,110,.28)}
+  .go.free{background:linear-gradient(135deg,#7c5cf0,#a06bff);border-color:transparent;box-shadow:0 8px 20px rgba(124,92,240,.28)}
+  .go.deal{background:linear-gradient(135deg,#e09f1f,#e2683a);border-color:transparent;box-shadow:0 8px 20px rgba(224,130,45,.28)}
+  .go:hover{filter:brightness(1.08)}
+  .empty{grid-column:1/-1;text-align:center;color:var(--dim2);font-size:13.5px;padding:44px 10px;
+    border:1px dashed var(--line);border-radius:18px}
+
+  footer{margin-top:34px;text-align:center;color:var(--dim2);font-size:11.5px;line-height:1.9;letter-spacing:.3px}
+  footer a{color:#9fb0d4;text-decoration:none;border-bottom:1px dotted rgba(159,176,212,.5)}
+  footer .note{max-width:640px;margin:0 auto 12px;color:#7d89a5}
+  .toTop{display:inline-block;margin-top:10px;font-size:11.5px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<main>
+<div class="wrap">
   <header>
-    <div class="logoRing">🎮</div>
-    <h1>Jenning 的游戏屋</h1>
-    <p>打开就玩 · 不用下载</p>
-    <div class="badges"><span>🐍 贪吃蛇</span><span>🔢 2048</span><span>💣 扫雷</span></div>
+    <span class="eyebrow"><i></i>iOS ONLY · 逐条核实</span>
+    <h1>Jenning 的应用雷达</h1>
+    <p>TestFlight 开放名额 · App Store 限免 · 降价</p>
+    <div class="stamp">
+      <span>最近核实 <b>2026-11-23 20:50</b></span>
+      <span>TF 名额 <b id="n-tf">–</b></span>
+      <span>限免 <b id="n-free">–</b></span>
+      <span>降价 <b id="n-deal">–</b></span>
+    </div>
   </header>
 
-  <div class="tabs">
-    <button id="tab-snake" class="on" onclick="showGame('snake')">🐍 贪吃蛇<small>SNAKE</small></button>
-    <button id="tab-g2048" onclick="showGame('g2048')">🔢 2048<small>PUZZLE</small></button>
-    <button id="tab-mine" onclick="showGame('mine')">💣 扫雷<small>MINES</small></button>
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="tabs" role="tablist" aria-label="分类筛选">
+        <button role="tab" data-cat="all" aria-selected="true">全部<em id="c-all">–</em></button>
+        <button role="tab" data-cat="tf" aria-selected="false">TF 名额<em id="c-tf">–</em></button>
+        <button role="tab" data-cat="free" aria-selected="false">限免<em id="c-free">–</em></button>
+        <button role="tab" data-cat="deal" aria-selected="false">降价<em id="c-deal">–</em></button>
+      </div>
+      <label class="search" aria-label="搜索应用">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+        <input id="q" type="search" placeholder="搜索应用名或关键词，如 Emby、音乐、扫描" autocomplete="off" enterkeyhint="search">
+      </label>
+    </div>
   </div>
 
-  <!-- 贪吃蛇 -->
-  <section id="sec-snake" class="on">
-    <div class="bar"><span class="chip">得分 <b id="snakeScore">0</b></span><span class="chip">最高 <b id="snakeBest">0</b></span>
-      <button class="btn primary" id="snakeBtn" onclick="snakeToggle()">开始</button></div>
-    <div id="snakeWrap">
-      <canvas id="snakeCv" width="340" height="340"></canvas>
-      <div class="pad">
-        <span class="blank"></span><button onclick="setDir(0,-1)">↑</button><span class="blank"></span>
-        <button onclick="setDir(-1,0)">←</button><button onclick="setDir(0,1)">↓</button><button onclick="setDir(1,0)">→</button>
-      </div>
-    </div>
-    <div class="msg" id="snakeMsg">点「开始」，滑动屏幕或按方向键控制</div>
-  </section>
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
 
-  <!-- 2048 -->
-  <section id="sec-g2048">
-    <div class="bar"><span class="chip">得分 <b id="s2048">0</b></span><span class="chip">最高 <b id="b2048">0</b></span>
-      <button class="btn primary" onclick="init2048()">新开局</button></div>
-    <div id="g2048"><div id="board"></div></div>
-    <div class="msg" id="msg2048">滑动或按方向键，合并出 2048</div>
-  </section>
-
-  <!-- 扫雷 -->
-  <section id="sec-mine">
-    <div class="bar"><span class="chip">💣 剩 <b id="mineLeft">10</b></span><span class="chip">⏱ <b id="mineTime">0</b>s</span>
-      <button class="btn" id="flagBtn" onclick="toggleFlag()">⛏ 挖雷</button>
-      <button class="btn primary" onclick="initMine()">新开局</button></div>
-    <div id="mineWrap"><div id="mineBoard"></div></div>
-    <div class="msg" id="mineMsg">点格子挖开，数字是周围雷数</div>
-  </section>
-
-  <footer>© 2026 Jenning Ko · jenning.ipv64.de</footer>
-</main>
+  <footer>
+    <div class="note">本站只收 iOS（iPhone / iPad）应用。TestFlight 名额与 App Store 价格均以 Apple 页面实时显示为准：名额随时可能满员，限免与降价随时可能恢复原价，点开按钮后先看页面价格再决定。</div>
+    <div>TestFlight 名额核实于 2026-11-23 20:50 · App Store 价格用 Apple 官方接口核实于同一时间（中国区，¥）</div>
+    <div>© 2026 Jenning Ko · jenning.ipv64.de · <a href="games.html">游戏屋 ↗</a></div>
+    <a class="toTop" href="#top">回到顶部 ↑</a>
+  </footer>
+</div>
 
 <script>
-/* ---------- 通用 ---------- */
-var cur = 'snake';
-function showGame(g){
-  cur = g;
-  ['snake','g2048','mine'].forEach(function(x){
-    document.getElementById('tab-'+x).classList.toggle('on', x===g);
-    document.getElementById('sec-'+x).classList.toggle('on', x===g);
+/* 每条都在 2026-11-23 20:50 (UTC+8) 实打开链接 / 调用 Apple 接口核实过 */
+const ITEMS = [
+  /* ---------- TestFlight 名额（iOS） ---------- */
+  {cat:'tf', name:'DeepPilot', desc:'给 DeepSeek Harness 做的原生 iOS 客户端：在 iPhone 上看项目、会话与 Agent 的实时输出，Agent 要批准或提问时直接在手机上处理，支持锁屏推送。', badge:'TF 开放中', plat:['iPhone'], note:'需自建 DSH 并装桥接插件，无法独立使用', url:'https://testflight.apple.com/join/JHb4j5DV', btn:'前往 TestFlight'},
+  {cat:'tf', name:'cuebo: AI Agent Workspace', desc:'在手机上跑 agent 的内测版：自己建 Agent、接入自己的模型服务商，聊天、浏览网页、改图，并用卡片查看结构化结果。', badge:'TF 开放中', plat:['iPhone','iOS 17+'], note:'部分功能需自备模型 API Key', url:'https://testflight.apple.com/join/WUPfjzh2', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Lenna · 影视库播放器', desc:'为 NAS 影视库做的播放器：同时管理多个 Emby / Jellyfin 服务器，海报墙、快速搜索，播放支持 4K、HDR10+、杜比视界、画中画、DLNA 投屏，进度可同步 iCloud 与 Trakt。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'不自带片源，需连自己的服务器', url:'https://testflight.apple.com/join/bExxpaX1', btn:'前往 TestFlight'},
+  {cat:'tf', name:'CapyPlayer · NAS 视频播放器', desc:'为 Emby、Plex、Jellyfin 用户做的客户端：连上家里的媒体服务器后自动同步媒体库，海报墙加流畅串流播放。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'Emby / Plex / Jellyfin', url:'https://testflight.apple.com/join/r3b5ZMVH', btn:'前往 TestFlight'},
+  {cat:'tf', name:'VLC media player', desc:'手机上的经典全格式播放器，绝大多数格式直接播不用转码，ASS / SSA 字幕完整支持，还能连 SMB、FTP、UPnP 等共享直接看片。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'老牌开源播放器', url:'https://testflight.apple.com/join/q6gm0qgr', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Headroom · 自托管音乐', desc:'自己服务器的音乐、有声书和播客播放器：连 Jellyfin、Emby、Plex、OpenSubsonic / Navidrome 或 Audiobookshelf，无缝播放、ReplayGain、参数均衡器与 AutoEQ。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'自托管党友好', url:'https://testflight.apple.com/join/UH3Cfhds', btn:'前往 TestFlight'},
+  {cat:'tf', name:'DS Music · 群晖 NAS 音乐', desc:'连群晖 Audio Station 播放自己音乐库的客户端：浏览库、播放列表、队列、同步歌词，支持离线收听。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'需群晖 NAS', url:'https://testflight.apple.com/join/A4iGyH2H', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Cs Music Pro', desc:'Cs Music 系列音乐播放器的内测版，这一版主要更新播放列表排序与「正在播放」页的呈现逻辑。', badge:'TF 开放中', plat:['iPhone'], note:'本地音乐播放器', url:'https://testflight.apple.com/join/dU2r1pkq', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Yattee', desc:'开源视频播放器：本地与远程视频都能播，可选 MPV 或 AVPlayer 内核，可直接读「文件」App 里的视频。', badge:'TF 开放中', plat:['iPhone','iPad','Apple TV'], note:'可自填播放器内核', url:'https://testflight.apple.com/join/jTWDHuZE', btn:'前往 TestFlight'},
+  {cat:'tf', name:'MiniBili · 哔哩哔哩第三方', desc:'第三方的 B 站客户端，轻量浏览与播放，详细说明见开发者站点。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'第三方客户端，登录与数据以官方为准', url:'https://testflight.apple.com/join/TgcHSGwb', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Mons · SSH & Agent 终端', desc:'iPhone 与 iPad 上的远程终端：SSH 连自己的电脑，接上已有的 tmux / Herdr 会话，在手机上直接跟跑在主机上的编程 Agent 交互。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'这一版主测连接稳定性与终端渲染', url:'https://testflight.apple.com/join/QrKBvj5S', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Anvil · 端侧离线 AI', desc:'跑在 iPhone 本机上的私人 AI 助手：离线聊天、处理文档与笔记、语音模式，还能用本机模型生成图片，不用账号。', badge:'TF 开放中', plat:['iPhone'], note:'模型在本地运行', url:'https://testflight.apple.com/join/5JGCZpxt', btn:'前往 TestFlight'},
+  {cat:'tf', name:'PCalc', desc:'老牌科学计算器 PCalc 的 TestFlight 版，想提前用新版本、并且愿意顺手报 bug 的话可以上车。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'经典付费计算器', url:'https://testflight.apple.com/join/qCCdSLT1', btn:'前往 TestFlight'},
+  {cat:'tf', name:'OldOS 17', desc:'把老 iOS 界面搬到现代设备上的 OldOS 系列，这次放的是 iOS 17 版本，纯怀旧向。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'怀旧 / 折腾向', url:'https://testflight.apple.com/join/VNduyVTG', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Cuterdio · 网络电台', desc:'网络电台播放器回来了：3.0 版重做界面，加了睡眠定时与闹钟，适合当床头收音机。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'Internet Radio', url:'https://testflight.apple.com/join/3zVoYTjL', btn:'前往 TestFlight'},
+  {cat:'tf', name:'Vocabry 词绘 · 看图背单词', desc:'一个词配一幅插画背单词：从基础 850 核心词开始，或先做 2 分钟定级测试，用 FSRS 间隔复习，无账号无广告。', badge:'TF 开放中', plat:['iPhone','iPad'], note:'不上架中国区，需非国区 Apple ID', url:'https://testflight.apple.com/join/XbD3fG7S', btn:'前往 TestFlight'},
+
+  /* ---------- 限免（付费 → 免费） ---------- */
+  {cat:'free', name:'Chordyne', desc:'左手选和弦、右手弹旋律的编曲工具，按下的音都落在当前和弦里，还能带上贝斯、鼓点和琶音，适合随手记旋律。', badge:'限免中', plat:['iPhone','iPad'], was:'¥38', now:'免费', url:'https://apps.apple.com/cn/app/chordyne/id6791322417', btn:'去 App Store 领取'},
+  {cat:'free', name:'SketchClub：绘画与素描', desc:'iPhone 和 iPad 上素描、绘画与修图，带图层、画笔和矢量工具，能记录绘画过程并导出，社区还有每日挑战。', badge:'限免中', plat:['iPhone','iPad'], was:'¥22', now:'免费', url:'https://apps.apple.com/cn/app/sketchclub-%E7%BB%98%E7%94%BB%E4%B8%8E%E7%B4%A0%E6%8F%8F/id404414176', btn:'去 App Store 领取'},
+  {cat:'free', name:'iCleanShot · 懒人相册清理', desc:'用「滑动」的极简方式给相册瘦身，照片一多又懒得整理的时候很好用。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/icleanshot-%E6%87%92%E4%BA%BA%E4%B8%93%E7%94%A8/id6756064954', btn:'去 App Store 领取'},
+  {cat:'free', name:'Tapewind · 磁带播放器', desc:'把音乐库播成一台复古磁带机：每张专辑、每个歌单都变成一盘 A/B 面磁带，带记忆播放进度。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/tapewind-cassette-player/id6819736826', btn:'去 App Store 领取'},
+  {cat:'free', name:'My Saved Places', desc:'用搜索、地图选点或坐标保存想去的地点，出门时一键在各自的地图或导航 App 里打开。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/my-saved-places/id6767223800', btn:'去 App Store 领取'},
+  {cat:'free', name:'Notelo', desc:'隐私笔记：手写、文字与图片混排，文件夹加标签，支持 Apple Intelligence 相关能力，iPhone / iPad / Mac 同步。', badge:'限免中', plat:['iPhone','iPad'], was:'¥8', now:'免费', url:'https://apps.apple.com/cn/app/notelo-notizen/id6824514957', btn:'去 App Store 领取'},
+
+  /* ---------- 降价 ---------- */
+  {cat:'deal', name:'Marvis Pro', desc:'把 Apple Music 彻底改头换面的播放器：自定义首页分区、智能排序与筛选、小组件和锁屏控件，重度听歌的人几乎人手一个。', badge:'降价中', plat:['iPhone','iPad'], was:'¥68', now:'¥38', url:'https://apps.apple.com/cn/app/marvis-pro/id1447768809', btn:'去 App Store 看看'},
+  {cat:'deal', name:'FL Studio Mobile', desc:'手机上能用的完整音乐制作工作站：多轨编曲、虚拟乐器、采样与混音，随手录想法够用。', badge:'降价中', plat:['iPhone','iPad'], was:'¥88', now:'¥44', url:'https://apps.apple.com/cn/app/fl-studio-mobile/id432850619', btn:'去 App Store 看看'},
+  {cat:'deal', name:'Be Focused Pro · 番茄钟', desc:'轻量的番茄钟与任务清单：分时段专注、统计专注时长，iPhone、iPad 与 Mac 数据同步。', badge:'降价中', plat:['iPhone','iPad'], was:'¥98', now:'¥58', url:'https://apps.apple.com/cn/app/be-focused-pro-pomodoro-timer/id953426154', btn:'去 App Store 看看'},
+  {cat:'deal', name:'好（hǎo）色相机', desc:'把眼前的颜色拍成可复用的色卡：用相机捕捉或从相册导入，取色、配色都方便。', badge:'降价中', plat:['iPhone','iPad'], was:'¥8', now:'¥3', url:'https://apps.apple.com/cn/app/%E5%A5%BD-h%C7%8Eo-%E8%89%B2%E7%9B%B8%E6%9C%BA/id1151401197', btn:'去 App Store 看看'}
+];
+
+const LABEL = {tf:'前往 TestFlight', free:'去 App Store 领取', deal:'去 App Store 看看'};
+const grid = document.getElementById('grid');
+const q = document.getElementById('q');
+let cat = 'all';
+
+function money(it){
+  if(it.cat === 'tf'){
+    return '<div class="price"><span>公开链接 · 名额有限</span></div>';
+  }
+  const zero = it.now === '免费';
+  return '<div class="price"><s>' + it.was + '</s><span>→</span><b class="' + (zero ? 'zero' : '') + '">' + it.now + '</b></div>';
+}
+
+function card(it){
+  const plats = it.plat.map(p => '<span>' + p + '</span>').join('');
+  const cls = it.cat;
+  const note = it.note ? '<span>' + it.note + '</span>' : '';
+  return '<article class="card" data-cat="' + cls + '">' +
+    '<div class="card-top"><h2>' + it.name + '</h2><span class="badge ' + cls + '">' + it.badge + '</span></div>' +
+    '<p class="desc">' + it.desc + '</p>' +
+    money(it) +
+    '<div class="meta">' + plats + note + '<span>核实 11-23</span></div>' +
+    '<a class="go ' + cls + '" href="' + it.url + '" target="_blank" rel="noopener noreferrer">' + it.btn + ' ↗</a>' +
+    '</article>';
+}
+
+function render(){
+  const kw = q.value.trim().toLowerCase();
+  const list = ITEMS.filter(function(it){
+    if(cat !== 'all' && it.cat !== cat) return false;
+    if(!kw) return true;
+    return (it.name + ' ' + it.desc + ' ' + (it.note || '') + ' ' + it.plat.join(' ')).toLowerCase().indexOf(kw) >= 0;
   });
-  if(g!=='snake') snakePause();
-}
-function best(k){ try{ return +localStorage.getItem(k)||0; }catch(e){ return 0; } }
-function setBest(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-function swipe(el, fn){
-  var sx=0, sy=0;
-  el.addEventListener('touchstart', function(e){ var t=e.touches[0]; sx=t.clientX; sy=t.clientY; }, {passive:true});
-  el.addEventListener('touchend', function(e){
-    var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy;
-    if(Math.max(Math.abs(dx),Math.abs(dy))<24) return;
-    if(Math.abs(dx)>Math.abs(dy)) fn(dx>0?'r':'l'); else fn(dy>0?'d':'u');
-  }, {passive:true});
-}
-
-/* ---------- 贪吃蛇 ---------- */
-var GN=17, cv=document.getElementById('snakeCv'), ctx=cv.getContext('2d'), CS=340/GN;
-var snake, sdir, ndir, food, sScore, sTimer=null, sSpeed;
-document.getElementById('snakeBest').textContent = best('snakeBest');
-function snakeReset(){
-  snake=[{x:8,y:8},{x:7,y:8},{x:6,y:8}]; sdir={x:1,y:0}; ndir={x:1,y:0};
-  sScore=0; sSpeed=150; putFood(); drawSnake();
-  document.getElementById('snakeScore').textContent=0;
-}
-function putFood(){
-  while(true){ var f={x:(Math.random()*GN)|0, y:(Math.random()*GN)|0};
-    if(!snake.some(function(s){return s.x===f.x&&s.y===f.y;})){ food=f; return; } }
-}
-function drawSnake(){
-  ctx.clearRect(0,0,340,340);
-  ctx.strokeStyle='rgba(255,255,255,0.045)'; ctx.lineWidth=1;
-  for(var i=1;i<GN;i++){
-    ctx.beginPath(); ctx.moveTo(i*CS,0); ctx.lineTo(i*CS,340); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,i*CS); ctx.lineTo(340,i*CS); ctx.stroke();
-  }
-  ctx.fillStyle='#ff5d6c';
-  ctx.shadowColor='#ff5d6c'; ctx.shadowBlur=14;
-  ctx.beginPath(); ctx.arc(food.x*CS+CS/2, food.y*CS+CS/2, CS*0.36, 0, 7); ctx.fill();
-  ctx.shadowBlur=0;
-  snake.forEach(function(s,i){
-    ctx.fillStyle = i===0 ? '#6fe89a' : 'rgba(47,158,110,'+(1-i/snake.length*0.45)+')';
-    var r=5, x=s.x*CS+1.5, y=s.y*CS+1.5, w=CS-3, h=CS-3;
-    ctx.beginPath();
-    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
-    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.fill();
-    if(i===0){
-      var cx=s.x*CS+CS/2, cy=s.y*CS+CS/2, ex=sdir.x*4, ey=sdir.y*4, px=-sdir.y*4.5, py=sdir.x*4.5;
-      ctx.fillStyle='#0b0e1d';
-      ctx.beginPath(); ctx.arc(cx+ex+px, cy+ey+py, 2.1, 0, 7); ctx.fill();
-      ctx.beginPath(); ctx.arc(cx+ex-px, cy+ey-py, 2.1, 0, 7); ctx.fill();
-    }
+  grid.innerHTML = list.length
+    ? list.map(card).join('')
+    : '<div class="empty">没有匹配的条目，换个关键词试试</div>';
+  document.querySelectorAll('.tabs button').forEach(function(b){
+    b.setAttribute('aria-selected', String(b.dataset.cat === cat));
   });
 }
-function snakeStep(){
-  sdir=ndir;
-  var h={x:snake[0].x+sdir.x, y:snake[0].y+sdir.y};
-  if(h.x<0||h.y<0||h.x>=GN||h.y>=GN||snake.some(function(s){return s.x===h.x&&s.y===h.y;})){
-    snakePause();
-    document.getElementById('snakeMsg').textContent='💥 撞了！本局得分 '+sScore+'，点开始再来';
-    document.getElementById('snakeBtn').textContent='开始';
-    return;
-  }
-  snake.unshift(h);
-  if(h.x===food.x&&h.y===food.y){
-    sScore+=10; document.getElementById('snakeScore').textContent=sScore;
-    if(sScore>best('snakeBest')){ setBest('snakeBest',sScore); document.getElementById('snakeBest').textContent=sScore; }
-    putFood();
-    if(sSpeed>75 && sScore%50===0){ sSpeed-=12; snakeRun(); }
-  } else snake.pop();
-  drawSnake();
-}
-function snakeRun(){ clearInterval(sTimer); sTimer=setInterval(snakeStep, sSpeed); }
-function snakePause(){ if(sTimer){ clearInterval(sTimer); sTimer=null; } }
-function snakeToggle(){
-  if(sTimer){ snakePause(); document.getElementById('snakeBtn').textContent='继续'; }
-  else{
-    if(!snake || document.getElementById('snakeBtn').textContent==='开始') snakeReset();
-    snakeRun(); document.getElementById('snakeBtn').textContent='暂停';
-    document.getElementById('snakeMsg').textContent='';
-  }
-}
-function setDir(x,y){ if(sdir.x===-x&&sdir.y===-y) return; ndir={x:x,y:y}; }
-swipe(cv, function(d){ if(d==='u')setDir(0,-1); if(d==='d')setDir(0,1); if(d==='l')setDir(-1,0); if(d==='r')setDir(1,0); });
-snakeReset();
 
-/* ---------- 2048 ---------- */
-var bd, sc2048, won2048;
-document.getElementById('b2048').textContent = best('b2048');
-function init2048(){
-  bd=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; sc2048=0; won2048=false;
-  addTile(); addTile(); render2048();
-  document.getElementById('msg2048').textContent='滑动或按方向键，合并出 2048';
-}
-function addTile(){
-  var e=[]; bd.forEach(function(v,i){ if(!v)e.push(i); });
-  if(!e.length) return;
-  bd[e[(Math.random()*e.length)|0]] = Math.random()<0.9?2:4;
-}
-function render2048(){
-  var b=document.getElementById('board'); b.innerHTML='';
-  bd.forEach(function(v){
-    var d=document.createElement('div');
-    if(v){ d.textContent=v; d.setAttribute('data-v', v>2048?'2048':v); if(v>=1024)d.className='big'; }
-    b.appendChild(d);
-  });
-  document.getElementById('s2048').textContent=sc2048;
-  if(sc2048>best('b2048')){ setBest('b2048',sc2048); document.getElementById('b2048').textContent=sc2048; }
-}
-function slideLine(line){
-  line=line.filter(function(v){return v;});
-  for(var i=0;i<line.length-1;i++){
-    if(line[i]===line[i+1]){ line[i]*=2; sc2048+=line[i]; line.splice(i+1,1); }
+function counts(){
+  const c = {all: ITEMS.length, tf: 0, free: 0, deal: 0};
+  ITEMS.forEach(function(it){ c[it.cat]++; });
+  for(const k in c){
+    const el = document.getElementById('c-' + k);
+    if(el) el.textContent = c[k];
+    const nb = document.getElementById('n-' + k);
+    if(nb) nb.textContent = c[k];
   }
-  while(line.length<4) line.push(0);
-  return line;
 }
-function move2048(dir){
-  var old=bd.join(','), i, line;
-  function getLine(i){
-    if(dir==='l') return [bd[i*4],bd[i*4+1],bd[i*4+2],bd[i*4+3]];
-    if(dir==='r') return [bd[i*4+3],bd[i*4+2],bd[i*4+1],bd[i*4]];
-    if(dir==='u') return [bd[i],bd[i+4],bd[i+8],bd[i+12]];
-    return [bd[i+12],bd[i+8],bd[i+4],bd[i]];
-  }
-  function setLine(i,line){
-    if(dir==='l'){ bd[i*4]=line[0];bd[i*4+1]=line[1];bd[i*4+2]=line[2];bd[i*4+3]=line[3]; }
-    if(dir==='r'){ bd[i*4+3]=line[0];bd[i*4+2]=line[1];bd[i*4+1]=line[2];bd[i*4]=line[3]; }
-    if(dir==='u'){ bd[i]=line[0];bd[i+4]=line[1];bd[i+8]=line[2];bd[i+12]=line[3]; }
-    if(dir==='d'){ bd[i+12]=line[0];bd[i+8]=line[1];bd[i+4]=line[2];bd[i]=line[3]; }
-  }
-  for(i=0;i<4;i++){ line=slideLine(getLine(i)); setLine(i,line); }
-  if(bd.join(',')===old) return;
-  addTile(); render2048();
-  if(!won2048 && bd.indexOf(2048)>=0){ won2048=true; document.getElementById('msg2048').textContent='🎉 拼出 2048 了！可以继续冲更高'; }
-  else if(over2048()) document.getElementById('msg2048').textContent='😵 没路走了，本局 '+sc2048+' 分，点新开局再来';
-}
-function over2048(){
-  if(bd.indexOf(0)>=0) return false;
-  for(var y=0;y<4;y++) for(var x=0;x<4;x++){
-    var v=bd[y*4+x];
-    if(x<3&&bd[y*4+x+1]===v) return false;
-    if(y<3&&bd[(y+1)*4+x]===v) return false;
-  }
-  return true;
-}
-swipe(document.getElementById('board'), function(d){ move2048(d); });
-init2048();
 
-/* ---------- 扫雷 ---------- */
-var MW=9, MM=10, mines, opened, flags, mStarted, mOver, mTimer=null, mSec, flagMode=false, firstTap;
-function initMine(){
-  mines=[]; opened=[]; flags=[]; mStarted=false; mOver=false; mSec=0; firstTap=true;
-  for(var i=0;i<MW*MW;i++){ mines.push(false); opened.push(false); flags.push(false); }
-  clearInterval(mTimer); mTimer=null;
-  document.getElementById('mineTime').textContent=0;
-  document.getElementById('mineLeft').textContent=MM;
-  document.getElementById('mineMsg').textContent='点格子挖开，数字是周围雷数';
-  renderMine();
-}
-function plantMines(safe){
-  var n=0;
-  while(n<MM){
-    var i=(Math.random()*MW*MW)|0;
-    if(mines[i]||i===safe) continue;
-    mines[i]=true; n++;
-  }
-}
-function around(i){
-  var x=i%MW, y=(i/MW)|0, c=0;
-  for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){
-    var nx=x+dx, ny=y+dy;
-    if(nx<0||ny<0||nx>=MW||ny>=MW) continue;
-    if(mines[ny*MW+nx]) c++;
-  }
-  return c;
-}
-function renderMine(){
-  var b=document.getElementById('mineBoard'); b.innerHTML='';
-  for(var i=0;i<MW*MW;i++){
-    (function(i){
-      var btn=document.createElement('button');
-      if(opened[i]){
-        btn.className='open';
-        if(mines[i]){ btn.textContent='💣'; btn.className='open boom'; }
-        else { var c=around(i); if(c){ btn.textContent=c; btn.className='open n'+c; } }
-      } else if(flags[i]) btn.textContent='🚩';
-      btn.onclick=function(){ tapMine(i); };
-      b.appendChild(btn);
-    })(i);
-  }
-  var f=flags.filter(Boolean).length;
-  document.getElementById('mineLeft').textContent=MM-f;
-}
-function tapMine(i){
-  if(mOver||opened[i]) return;
-  if(flagMode){ flags[i]=!flags[i]; renderMine(); return; }
-  if(flags[i]) return;
-  if(firstTap){ plantMines(i); firstTap=false; }
-  if(!mStarted){ mStarted=true; mTimer=setInterval(function(){ mSec++; document.getElementById('mineTime').textContent=mSec; },1000); }
-  if(mines[i]){
-    mOver=true; clearInterval(mTimer);
-    for(var j=0;j<MW*MW;j++) if(mines[j]) opened[j]=true;
-    renderMine();
-    document.getElementById('mineMsg').textContent='💥 踩雷了！点新开局再来';
-    return;
-  }
-  openCell(i); renderMine();
-  var left=0;
-  for(var k=0;k<MW*MW;k++) if(!opened[k]&&!mines[k]) left++;
-  if(left===0){
-    mOver=true; clearInterval(mTimer);
-    document.getElementById('mineMsg').textContent='🎉 全扫完了，用时 '+mSec+' 秒！';
-  }
-}
-function openCell(i){
-  if(opened[i]||flags[i]) return;
-  opened[i]=true;
-  if(around(i)!==0) return;
-  var x=i%MW, y=(i/MW)|0;
-  for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){
-    var nx=x+dx, ny=y+dy;
-    if(nx<0||ny<0||nx>=MW||ny>=MW) continue;
-    openCell(ny*MW+nx);
-  }
-}
-function toggleFlag(){
-  flagMode=!flagMode;
-  var b=document.getElementById('flagBtn');
-  b.textContent = flagMode?'🚩 插旗':'⛏ 挖雷';
-  b.classList.toggle('flagon', flagMode);
-}
-initMine();
-
-/* ---------- 键盘 ---------- */
-document.addEventListener('keydown', function(e){
-  if(cur==='snake'){
-    if(e.key==='ArrowUp')setDir(0,-1); else if(e.key==='ArrowDown')setDir(0,1);
-    else if(e.key==='ArrowLeft')setDir(-1,0); else if(e.key==='ArrowRight')setDir(1,0);
-    else return; e.preventDefault();
-  } else if(cur==='g2048'){
-    if(e.key==='ArrowUp')move2048('u'); else if(e.key==='ArrowDown')move2048('d');
-    else if(e.key==='ArrowLeft')move2048('l'); else if(e.key==='ArrowRight')move2048('r');
-    else return; e.preventDefault();
-  }
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.addEventListener('click', function(){ cat = b.dataset.cat; render(); });
 });
+q.addEventListener('input', render);
+counts();
+render();
 </script>
 </body>
 </html>
