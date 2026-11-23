@@ -6,10 +6,12 @@ jenning.ipv64.de 数据自动保鲜脚本（只用 Python 标准库）
 做三件事：
 1. TestFlight 名额：逐个打开 data.json 里的 TF 公开链接，满了 / 停止收人 / 链接失效的条目剔除；
    网络超时等临时异常一律保留，避免误删。
-2. App Store 价格：用 Apple 官方 lookup 接口（中国区）核实 type=free / deal 的条目，
+2. App Store 价格：按条目自己的 region（默认 CN）调用 Apple 官方 lookup 接口
+   （country=cn / country=us）核实 type=free / deal 的条目，
    限免已恢复原价、降价已涨回的剔除，仍在优惠的更新现价。
-3. 新条目：扫描公开 RSS 源里明确写了「限免 / 限时免费」并且带 App Store ID 的条目，
-   再用 Apple 接口核实（必须是 iOS App、中国区在售、现价 0 元）才收录；源不稳或没新东西就安静跳过。
+3. 新条目：扫描公开源里明确写了「限免 / 限时免费 / free」并且带 App Store ID 的条目，
+   再用 Apple 接口核实（必须是 iOS App、对应区服在售、现价 0）才收录；
+   源不稳或没新东西就安静跳过。
 
 最后把 updated_at 写成当前北京时间并写回 data.json。
 用法：python3 scripts/update.py [--dry-run]
@@ -39,6 +41,13 @@ TIMEOUT = 25
 BEIJING = datetime.timezone(datetime.timedelta(hours=8))
 
 TYPE_ORDER = {"tf": 0, "free": 1, "deal": 2}
+
+# 区服配置：Apple lookup 的 country 参数、货币代码与展示符号
+REGIONS = {
+    "CN": {"country": "cn", "currency": "CNY", "symbol": "¥", "label": "国区"},
+    "US": {"country": "us", "currency": "USD", "symbol": "$", "label": "美区"},
+}
+DEFAULT_REGION = "CN"
 
 # TestFlight 页面状态判定
 TF_FULL_MARKERS = [
@@ -70,6 +79,11 @@ def fetch(url, ua=UA_MOBILE, timeout=TIMEOUT):
         return resp.status, raw.decode(charset, "replace")
 
 
+def region_of(item):
+    region = (item.get("region") or DEFAULT_REGION).upper()
+    return region if region in REGIONS else DEFAULT_REGION
+
+
 # ---------------------------------------------------------------- TestFlight
 
 
@@ -80,8 +94,6 @@ def check_testflight(url):
     except urllib.error.HTTPError as exc:
         if exc.code in (404, 410):
             return "gone", "HTTP %s" % exc.code
-        if exc.code in (429, 500, 502, 503, 504):
-            return "error", "HTTP %s" % exc.code
         return "error", "HTTP %s" % exc.code
     except Exception as exc:  # 超时、DNS、TLS 等：临时异常，保留条目
         return "error", type(exc).__name__
@@ -99,9 +111,10 @@ def check_testflight(url):
 # ---------------------------------------------------------------- App Store
 
 
-def lookup_app(app_id):
-    """返回 (状态, data)。状态：ok / notfound / error"""
-    url = "https://itunes.apple.com/lookup?country=cn&id=%s" % app_id
+def lookup_app(app_id, region=DEFAULT_REGION):
+    """按区服查 Apple lookup，返回 (状态, data)。状态：ok / notfound / error"""
+    country = REGIONS[region]["country"]
+    url = "https://itunes.apple.com/lookup?country=%s&id=%s" % (country, app_id)
     try:
         _, body = fetch(url, ua=UA_DESKTOP)
         payload = json.loads(body)
@@ -120,7 +133,7 @@ def tidy_price(value):
 
 
 def app_price(entry):
-    """取现价（数值，人民币），取不到返回 None"""
+    """取现价（数值，所在区货币），取不到返回 None"""
     for key in ("price", "priceFormatted"):
         val = entry.get(key)
         if isinstance(val, (int, float)):
@@ -133,6 +146,16 @@ def app_price(entry):
         except ValueError:
             return None
     return None
+
+
+def money(value, region):
+    """给日志用的价格展示，例如 ¥38 / $4.99 / 0"""
+    symbol = REGIONS[region]["symbol"]
+    if value is None:
+        return "?"
+    if float(value) == 0:
+        return "%s0" % symbol
+    return "%s%g" % (symbol, float(value))
 
 
 def app_id_from_url(url):
@@ -172,10 +195,14 @@ def plat_list(entry):
 
 
 FEEDS = [
-    ("appinn", "https://www.appinn.com/feed/"),
-    ("apprcn", "https://free.apprcn.com/feed/"),
-    ("applealmond", "https://www.applealmond.com/feed"),
+    ("CN", "appinn", "https://www.appinn.com/feed/"),
+    ("CN", "apprcn", "https://free.apprcn.com/feed/"),
+    ("CN", "applealmond", "https://www.applealmond.com/feed"),
 ]
+# 美区限免：360 Reader 每天更新的「Paid iPhone Apps Gone Free」表格，
+# 表里直接给出 App Store 链接（含 id）、分类、原价与评分，解析稳定。
+US_FREE_PAGE = "https://360-reader.com/paid-iphone-apps-gone-free/"
+
 DEAL_WORDS = ("限免", "限时免费", "限時免費", "限免中", "免费领取", "免費領取")
 ORIG_PRICE_RE = re.compile(r"(?:原价|原價|定价|定價|原价\s*[:：]?)\s*[¥￥$]\s*(\d+(?:\.\d+)?)")
 APPLE_ID_RE = re.compile(r"apps\.apple\.com/[a-z]{2}/app/[^\s\"'<>]*?/id(\d{6,})")
@@ -193,12 +220,10 @@ def strip_cdata(text):
     return re.sub(r"<!\[CDATA\[(.*?)\]\]>", r"\1", text or "", flags=re.S)
 
 
-def discover_candidates(data):
-    """从公开 RSS 里找「明确限免 + 带 App Store ID」的候选，返回 [{app_id, name_hint, was, feed}]"""
-    known_ids = {it.get("app_id") for it in data["items"] if it.get("app_id")}
-    seen = set()
+def discover_from_feeds(known_ids, seen):
+    """从国区公开 RSS 里找「明确限免 + 带 App Store ID」的候选"""
     out = []
-    for name, url in FEEDS:
+    for region, name, url in FEEDS:
         try:
             _, xml = fetch(url, ua=UA_DESKTOP)
         except Exception as exc:
@@ -228,6 +253,7 @@ def discover_candidates(data):
                         "name_hint": clean_text(strip_cdata(title.group(1)) if title else "", 60),
                         "was": float(was.group(1)) if was else None,
                         "feed": name,
+                        "region": region,
                     }
                 )
                 hits += 1
@@ -237,19 +263,101 @@ def discover_candidates(data):
     return out
 
 
+RATING_RE = re.compile(r"([\d.]+)\s*\(([\d,]+)")
+
+
+def discover_from_us_page(known_ids, seen):
+    """解析 360 Reader 的美区限免表格：名字 / 分类 / 原价 Free / 评分 / App Store id"""
+    try:
+        _, html = fetch(US_FREE_PAGE, ua=UA_DESKTOP)
+    except Exception as exc:
+        log("  [源] 360read 抓取失败（%s），跳过" % type(exc).__name__)
+        return []
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.S | re.I)
+    out = []
+    for row in rows:
+        if "apps.apple.com" not in row:
+            continue
+        cells = [re.sub(r"<[^>]+>", " ", c) for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.S)]
+        cells = [re.sub(r"\s+", " ", c).strip() for c in cells]
+        if len(cells) < 3:
+            continue
+        price_cell = cells[2]
+        if "free" not in price_cell.lower():
+            continue
+        was = re.search(r"\$\s*(\d+(?:\.\d+)?)", price_cell)
+        id_match = re.search(r"apps\.apple\.com/us/app/[^\s\"'<>]*?/id(\d{6,})", row)
+        if not id_match:
+            continue
+        app_id = int(id_match.group(1))
+        if app_id in known_ids or app_id in seen:
+            continue
+        rating = None
+        rating_count = 0
+        rating_cell = cells[3] if len(cells) > 3 else ""
+        match = RATING_RE.search(rating_cell.replace(",", ""))
+        if match:
+            try:
+                rating = float(match.group(1))
+                rating_count = int(match.group(2))
+            except ValueError:
+                rating = None
+        # 美区源里杂项很多，只收有足够人打分、评分够高的，避免把站点变成流水账
+        if rating is None or rating < 4.5 or rating_count < 300:
+            continue
+        seen.add(app_id)
+        out.append(
+            {
+                "app_id": app_id,
+                "name_hint": clean_text(cells[0], 60),
+                "was": float(was.group(1)) if was else None,
+                "feed": "360read",
+                "region": "US",
+                "rating": rating,
+                "rating_count": rating_count,
+            }
+        )
+    log("  [源] 360read：%d 行表格，%d 个新美区 App ID" % (len(rows), len(out)))
+    out.sort(key=lambda c: -(c.get("rating_count") or 0))
+    return out
+
+
 def build_item(cand, entry):
     """把 Apple 接口返回的条目变成 data.json 里的一个免单/降价条目"""
+    region = cand.get("region") or DEFAULT_REGION
+    cfg = REGIONS[region]
     price_was = cand.get("was")
     price_now = app_price(entry) or 0.0
     name = clean_text(entry.get("trackName") or cand.get("name_hint") or "", 60)
     genre = clean_text(entry.get("primaryGenreName") or "", 20)
-    desc = clean_text(entry.get("description") or "", 110)
-    if not desc:
-        desc = "%s 上的 iOS 应用，用 Apple 官方接口核实当前在中国区%s。" % (
-            genre or "App Store",
-            "免费" if price_now == 0 else "售价 ¥%g" % price_now,
-        )
-    url = entry.get("trackViewUrl") or "https://apps.apple.com/cn/app/id%s" % cand["app_id"]
+    if region == "US":
+        # 美区应用的描述多是英文，站点用中文，这里写一句中文通用说明
+        rating = entry.get("averageUserRating")
+        votes = entry.get("userRatingCount") or 0
+        extra = ""
+        if rating and votes:
+            extra = "，%.1f★ / %d 个评分" % (float(rating), int(votes))
+        if price_was and price_was > price_now:
+            desc = "%s 类应用，美区限时免费（原价 %s%g%s），价格由 Apple 官方接口核实。" % (
+                genre or "App Store",
+                cfg["symbol"],
+                price_was,
+                extra,
+            )
+        else:
+            desc = "%s 类应用，Apple 官方接口核实美区现价 %s0（限时免费%s）。" % (
+                genre or "App Store",
+                cfg["symbol"],
+                extra,
+            )
+    else:
+        desc = clean_text(entry.get("description") or "", 110)
+        if not desc:
+            desc = "%s 上的 iOS 应用，用 Apple 官方接口核实当前在中国区%s。" % (
+                genre or "App Store",
+                "免费" if price_now == 0 else "售价 %s%g" % (cfg["symbol"], price_now),
+            )
+    url = entry.get("trackViewUrl") or "https://apps.apple.com/%s/app/id%s" % (cfg["country"], cand["app_id"])
     url = re.sub(r"\?.*$", "", url)
     item = {
         "type": "free",
@@ -257,6 +365,8 @@ def build_item(cand, entry):
         "desc": desc,
         "badge": "限免中",
         "plat": plat_list(entry),
+        "region": region,
+        "currency": cfg["currency"],
         "url": url,
         "app_id": int(cand["app_id"]),
         "price_now": price_now,
@@ -279,6 +389,12 @@ def main():
     before = len(items)
     log("读取 %d 条条目" % before)
 
+    # 老数据没有 region / currency 时补成国区
+    for it in items:
+        if it.get("type") in ("free", "deal"):
+            it["region"] = region_of(it)
+            it["currency"] = REGIONS[it["region"]]["currency"]
+
     # ---- 1 & 2：并发核实 ----
     tf_items = [it for it in items if it.get("type") == "tf"]
     store_items = [it for it in items if it.get("type") in ("free", "deal") and it.get("app_id")]
@@ -294,12 +410,12 @@ def main():
 
     store_results = {}
     with ThreadPoolExecutor(max_workers=8) as pool:
-        futures = {pool.submit(lookup_app, it["app_id"]): it for it in store_items}
+        futures = {pool.submit(lookup_app, it["app_id"], region_of(it)): it for it in store_items}
         for fut, it in futures.items():
-            try:
-                store_results[it["app_id"]] = fut.result()
-            except Exception as exc:
-                store_results[it["app_id"]] = ("error", {"error": type(exc).__name__})
+            store_results[id(it)] = fut.result()
+    for it in store_items:
+        if id(it) not in store_results:
+            store_results[id(it)] = ("error", {"error": "no result"})
 
     kept = []
     dropped = []
@@ -318,13 +434,15 @@ def main():
             continue
 
         if kind in ("free", "deal") and it.get("app_id"):
-            status, entry = store_results.get(it["app_id"], ("error", {}))
+            region = region_of(it)
+            cfg = REGIONS[region]
+            status, entry = store_results.get(id(it), ("error", {}))
             if status == "error":
                 log("  [价格] 接口异常，保留：%s" % it.get("name"))
                 kept.append(it)
                 continue
             if status == "notfound":
-                dropped.append((it, "中国区 App Store 查不到该 App"))
+                dropped.append((it, "%s App Store 查不到该 App" % cfg["label"]))
                 continue
             if not is_ios_app(entry):
                 dropped.append((it, "已不是 iOS App"))
@@ -337,14 +455,16 @@ def main():
             was = it.get("price_was")
             if kind == "free":
                 if price != 0:
-                    dropped.append((it, "限免已结束，现价 ¥%g" % price))
+                    dropped.append((it, "限免已结束，现价 %s" % money(price, region)))
                     continue
                 it["price_now"] = 0
             else:  # deal
                 if was is not None and price >= float(was):
-                    dropped.append((it, "降价已结束，现价 ¥%g（原价 ¥%g）" % (price, float(was))))
+                    dropped.append(
+                        (it, "降价已结束，现价 %s（原价 %s）" % (money(price, region), money(was, region)))
+                    )
                     continue
-                if was is not None and price <= 0:
+                if price <= 0:
                     # 降价变成免费了：升级成限免
                     it["type"] = "free"
                     it["badge"] = "限免中"
@@ -360,17 +480,21 @@ def main():
 
     # ---- 3：补充新条目 ----
     log("扫描公开源寻找新条目…")
-    added = []
-    try:
-        candidates = discover_candidates({"items": kept})
-    except Exception as exc:
-        candidates = []
-        log("  发现流程出错（%s），跳过补充" % type(exc).__name__)
+    known_ids = {it.get("app_id") for it in kept if it.get("app_id")}
+    seen = set()
+    candidates = []
+    for discover in (discover_from_feeds, discover_from_us_page):
+        try:
+            candidates.extend(discover(known_ids, seen))
+        except Exception as exc:
+            log("  发现流程出错（%s），跳过该源" % type(exc).__name__)
 
+    added = []
     for cand in candidates:
         if len(added) >= 3:
             break
-        status, entry = lookup_app(cand["app_id"])
+        region = cand.get("region") or DEFAULT_REGION
+        status, entry = lookup_app(cand["app_id"], region)
         if status != "ok":
             log("  跳过 %s：Apple 接口 %s" % (cand["app_id"], status))
             continue
@@ -379,20 +503,20 @@ def main():
             continue
         price = app_price(entry)
         if price is None or price != 0:
-            log("  跳过 %s：现价不是 0（%s）" % (cand["app_id"], price))
+            log("  跳过 %s：%s现价不是 0（%s）" % (cand["app_id"], REGIONS[region]["label"], money(price, region)))
             continue
         if any(it.get("app_id") == cand["app_id"] for it in kept):
             continue
         item = build_item(cand, entry)
         kept.append(item)
         added.append(item)
-        log("  + 新增：%s（%s）" % (item["name"], item["url"]))
+        log("  + 新增[%s]：%s（%s）" % (REGIONS[region]["label"], item["name"], item["url"]))
 
     for it in kept:
         it.pop("auto", None)
 
-    # 排序：tf → free → deal，组内保持原顺序
-    kept.sort(key=lambda it: TYPE_ORDER.get(it.get("type"), 9))
+    # 排序：tf → free → deal，组内保持原顺序（同一类型里国区在前、美区在后）
+    kept.sort(key=lambda it: (TYPE_ORDER.get(it.get("type"), 9), 0 if region_of(it) == "CN" else 1))
 
     # 安全阀：一次剔除过半条目通常意味着上游接口异常，宁可不更新也不要清空站点
     if before >= 10 and len(dropped) > before // 2:
@@ -407,8 +531,10 @@ def main():
     data["items"] = kept
 
     log("")
-    log("结果：原有 %d 条 → 保留 %d 条，剔除 %d 条，新增 %d 条，共 %d 条"
-        % (before, len(kept) - len(added), len(dropped), len(added), len(kept)))
+    log(
+        "结果：原有 %d 条 → 保留 %d 条，剔除 %d 条，新增 %d 条，共 %d 条"
+        % (before, len(kept) - len(added), len(dropped), len(added), len(kept))
+    )
     for it, reason in dropped:
         log("  - 剔除 %s：%s" % (it.get("name"), reason))
     log("updated_at = %s（北京时间）" % now)

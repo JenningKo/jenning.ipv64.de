@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23 21:39",
+  "updated_at": "2026-11-23 21:46",
   "items": [
     {
       "type": "tf",
@@ -206,7 +206,9 @@
       "url": "https://apps.apple.com/cn/app/chordyne/id6791322417",
       "app_id": 6791322417,
       "price_was": 38,
-      "price_now": 0
+      "price_now": 0,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "free",
@@ -220,7 +222,9 @@
       "url": "https://apps.apple.com/cn/app/sketchclub-%E7%BB%98%E7%94%BB%E4%B8%8E%E7%B4%A0%E6%8F%8F/id404414176",
       "app_id": 404414176,
       "price_was": 22,
-      "price_now": 0
+      "price_now": 0,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "free",
@@ -234,7 +238,9 @@
       "url": "https://apps.apple.com/cn/app/icleanshot-%E6%87%92%E4%BA%BA%E4%B8%93%E7%94%A8/id6756064954",
       "app_id": 6756064954,
       "price_was": 8,
-      "price_now": 0
+      "price_now": 0,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "free",
@@ -248,7 +254,9 @@
       "url": "https://apps.apple.com/cn/app/tapewind-cassette-player/id6819736826",
       "app_id": 6819736826,
       "price_was": 8,
-      "price_now": 0
+      "price_now": 0,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "free",
@@ -262,7 +270,9 @@
       "url": "https://apps.apple.com/cn/app/my-saved-places/id6767223800",
       "app_id": 6767223800,
       "price_was": 8,
-      "price_now": 0
+      "price_now": 0,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "free",
@@ -276,7 +286,204 @@
       "url": "https://apps.apple.com/cn/app/notelo-notizen/id6824514957",
       "app_id": 6824514957,
       "price_was": 8,
+      "price_now": 0,
+      "region": "CN",
+      "currency": "CNY"
+    },
+    {
+      "type": "free",
+      "name": "EARTH 3D · 超真实 3D 地球",
+      "desc": "用 Apple Metal 实时渲染的 3D 地球：真实的太阳与月亮位置、云层与城市灯光、高精度地形贴图，手指拖动就能转着看光线扫过地表。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/earth-3d-ultra-real-planet/id550152297",
+      "app_id": 550152297,
+      "price_was": 14.99,
       "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "WEATHERCAST 24 · 当地天气",
+      "desc": "干净的本地天气预报：48 小时逐时、最长 15 天预报，气温、降水、风力一屏看完，没有广告和多余模块。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区仍在售 ¥98，只有美区免费",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/weathercast-24-local-forecast/id1512214163",
+      "app_id": 1512214163,
+      "price_was": 14.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Mouse · Keyboard · 手机变触控板",
+      "desc": "把 iPhone / iPad 变成电脑的无线触控板加键盘：多指手势、滚动、全屏输入配表情与功能键，电脑端装个免费助手、同一 Wi-Fi 下就能用。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/mouse-keyboard/id1515294700",
+      "app_id": 1515294700,
+      "price_was": 4.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Priime · 专业照片视频编辑",
+      "desc": "纯本机运行的照片视频编辑器：RAW、HDR、实况照片与视频都能全分辨率编辑，摄影师设计的一键风格，素材不上传服务器。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/priime-photo-video-editor/id934587545",
+      "app_id": 934587545,
+      "price_was": 2.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Brightly · 一键提亮暗部",
+      "desc": "专治过暗的照片和视频：一个滑块自适应提亮暗部、同时保住高光不过曝，支持 RAW 与 4K 视频，另有一整套专业参数微调。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/brightly-fix-dark-photos/id1270382069",
+      "app_id": 1270382069,
+      "price_was": 5.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Fotospot · 美国公路旅行打卡",
+      "desc": "收录美国 50 州 1.4 万多个值得拍照的地点——瀑布、路边巨型甜甜圈、小众博物馆、电影取景地，公路旅行时按地图一路找过去。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/fotospot-road-trip-community/id1200952700",
+      "app_id": 1200952700,
+      "price_was": 4.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Noizio · 白噪音与助眠",
+      "desc": "40 多种环境音（雨声、海浪、白噪音）自由混音，帮你专注或入睡：无广告、无账号、不用联网，带睡眠定时与锁屏控制，六个音色免费、内购一次解锁其余。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/noizio-focus-relax-sleep/id960716999",
+      "app_id": 960716999,
+      "price_was": 2.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "iVerify Basic · 手机安全体检",
+      "desc": "一键扫描设备漏洞与可疑配置，给出可执行的加固建议；出自做企业级移动安全的 iVerify，基础版免费，适合定期给手机做个体检。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区未上架",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/iverify-basic/id1466120520",
+      "app_id": 1466120520,
+      "price_was": 0.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Ghost SLS · 灵异探测相机",
+      "desc": "把 iPhone 变成 SLS「人影探测」相机：滤出画面里疑似人形的轮廓，还能判断是不是灯光造成的假象，拍下来存档，纯娱乐向。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区未上架",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/ghost-sls/id1504150811",
+      "app_id": 1504150811,
+      "price_was": 0.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Relight - Better Photos",
+      "desc": "Photo & Video 类应用，美区限时免费（原价 $4.99，4.8★ / 1682 个评分），价格由 Apple 官方接口核实。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/relight-better-photos/id1055538670",
+      "app_id": 1055538670,
+      "price_now": 0.0,
+      "price_was": 4.99
+    },
+    {
+      "type": "free",
+      "name": "Christmas Radio UK",
+      "desc": "Music 类应用，美区限时免费（原价 $0.99，4.5★ / 886 个评分），价格由 Apple 官方接口核实。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/christmas-radio-uk/id1157967613",
+      "app_id": 1157967613,
+      "price_now": 0.0,
+      "price_was": 0.99
+    },
+    {
+      "type": "free",
+      "name": "Calc4Key",
+      "desc": "Utilities 类应用，美区限时免费（原价 $0.99，4.6★ / 832 个评分），价格由 Apple 官方接口核实。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/calc4key/id1585531759",
+      "app_id": 1585531759,
+      "price_now": 0.0,
+      "price_was": 0.99
     },
     {
       "type": "deal",
@@ -290,7 +497,9 @@
       "url": "https://apps.apple.com/cn/app/marvis-pro/id1447768809",
       "app_id": 1447768809,
       "price_was": 68,
-      "price_now": 38
+      "price_now": 38,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "deal",
@@ -304,7 +513,9 @@
       "url": "https://apps.apple.com/cn/app/fl-studio-mobile/id432850619",
       "app_id": 432850619,
       "price_was": 88,
-      "price_now": 44
+      "price_now": 44,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "deal",
@@ -318,7 +529,9 @@
       "url": "https://apps.apple.com/cn/app/be-focused-pro-pomodoro-timer/id953426154",
       "app_id": 953426154,
       "price_was": 98,
-      "price_now": 58
+      "price_now": 58,
+      "region": "CN",
+      "currency": "CNY"
     },
     {
       "type": "deal",
@@ -332,7 +545,77 @@
       "url": "https://apps.apple.com/cn/app/%E5%A5%BD-h%C7%8Eo-%E8%89%B2%E7%9B%B8%E6%9C%BA/id1151401197",
       "app_id": 1151401197,
       "price_was": 8,
-      "price_now": 3
+      "price_now": 3,
+      "region": "CN",
+      "currency": "CNY"
+    },
+    {
+      "type": "deal",
+      "name": "Things 3",
+      "desc": "口碑最好的 GTD 待办之一：收件箱、今天、计划、随时、某天五个视角，加项目与区域管理，界面克制好看，一次买断不订阅。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区现价 ¥47",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/things-3/id904237743",
+      "app_id": 904237743,
+      "price_was": 9.99,
+      "price_now": 6.99
+    },
+    {
+      "type": "deal",
+      "name": "Little Nightmares",
+      "desc": "主机上的恐怖解谜冒险搬上手机：扮演小六在巨型船体「胃袋」里潜行、躲怪物、解机关，美术阴暗精致，支持手柄。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区未上架",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/little-nightmares/id1620883955",
+      "app_id": 1620883955,
+      "price_was": 8.99,
+      "price_now": 4.49
+    },
+    {
+      "type": "deal",
+      "name": "StopTheMadness Pro",
+      "desc": "Safari 扩展里的老牌狠角色：阻止网站劫持右键、选中、复制、粘贴与自动播放，还能过滤跟踪参数、接管画中画与视频倍速。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区现价 ¥68",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/stopthemadness-pro/id6471380298",
+      "app_id": 6471380298,
+      "price_was": 14.99,
+      "price_now": 9.99
+    },
+    {
+      "type": "deal",
+      "name": "60 Seconds! Reatomized",
+      "desc": "核末日生存经营：60 秒内把家人和物资塞进避难所，之后每天决定出门搜刮还是守家，重制版换了高清画面，还加了生存挑战模式。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区未上架",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/60-seconds-reatomized/id1474716211",
+      "app_id": 1474716211,
+      "price_was": 3.99,
+      "price_now": 1.99
     }
   ]
 }

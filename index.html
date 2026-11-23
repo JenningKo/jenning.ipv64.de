@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Jenning 的应用雷达 · iOS TestFlight 名额 & 限免降价</title>
-<meta name="description" content="只收 iOS：TestFlight 开放名额、App Store 限免与降价，逐条核实后收录，由 GitHub Actions 自动更新。">
+<title>Jenning 的应用雷达 · iOS TestFlight 名额 & 国区/美区限免降价</title>
+<meta name="description" content="只收 iOS：TestFlight 开放名额、App Store 国区与美区限免、降价，逐条核实后收录，由 GitHub Actions 自动更新。">
 <meta name="theme-color" content="#080b16">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%A1%3C/text%3E%3C/svg%3E">
 <script>
@@ -53,6 +53,8 @@
     --toggle-bg:rgba(255,255,255,.07); --toggle-line:rgba(255,255,255,.14);
     --panel:rgba(12,17,34,.80); --panel-bd:rgba(255,255,255,.13);
     --focus:rgba(139,92,246,.55);
+    --cn:#ff8f7d; --cn-bg:rgba(255,122,102,.14); --cn-bd:rgba(255,122,102,.30);
+    --us:#7fb4ff; --us-bg:rgba(88,150,255,.15); --us-bd:rgba(88,150,255,.32);
   }
 
   /* ---------- 浅色（跟随系统时的浅色） ---------- */
@@ -90,6 +92,8 @@
       --toggle-bg:rgba(255,255,255,.85); --toggle-line:rgba(20,32,66,.12);
       --panel:rgba(255,255,255,.88); --panel-bd:rgba(20,32,66,.10);
       --focus:rgba(90,110,230,.45);
+      --cn:#bf3a26; --cn-bg:rgba(191,58,38,.10); --cn-bd:rgba(191,58,38,.26);
+      --us:#1d5fd0; --us-bg:rgba(29,95,208,.10); --us-bd:rgba(29,95,208,.24);
     }
   }
 
@@ -127,6 +131,8 @@
     --toggle-bg:rgba(255,255,255,.85); --toggle-line:rgba(20,32,66,.12);
     --panel:rgba(255,255,255,.88); --panel-bd:rgba(20,32,66,.10);
     --focus:rgba(90,110,230,.45);
+    --cn:#bf3a26; --cn-bg:rgba(191,58,38,.10); --cn-bd:rgba(191,58,38,.26);
+    --us:#1d5fd0; --us-bg:rgba(29,95,208,.10); --us-bd:rgba(29,95,208,.24);
   }
 
   html{-webkit-text-size-adjust:100%;color-scheme:dark}
@@ -201,6 +207,17 @@
   .search input:focus{border-color:var(--focus);background:var(--card-hover);box-shadow:0 0 0 3px var(--focus)}
   .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;
     stroke:var(--dim2);fill:none;stroke-width:2;pointer-events:none}
+  .regions{display:flex;gap:6px;align-items:center;flex:1 1 100%;padding:2px;overflow-x:auto;scrollbar-width:none}
+  .regions::-webkit-scrollbar{display:none}
+  .regions .lbl{font-size:11px;color:var(--dim2);letter-spacing:.6px;margin-right:2px;white-space:nowrap}
+  .regions button{flex:0 0 auto;min-height:30px;padding:5px 12px;border-radius:999px;border:1px solid var(--chip-border);
+    background:var(--chip);color:var(--dim);font-size:12px;cursor:pointer;transition:.16s;white-space:nowrap;
+    font-family:inherit;font-weight:600}
+  .regions button:hover{background:var(--card-hover);color:var(--txt)}
+  .regions button[aria-pressed="true"]{color:var(--txt);border-color:var(--line-strong);background:var(--card-hover);
+    box-shadow:inset 0 0 0 1px var(--line-strong)}
+  .regions button[data-region="CN"][aria-pressed="true"]{color:var(--cn);border-color:var(--cn-bd);background:var(--cn-bg)}
+  .regions button[data-region="US"][aria-pressed="true"]{color:var(--us);border-color:var(--us-bd);background:var(--us-bg)}
 
   /* ---------- grid & cards ---------- */
   .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:10px}
@@ -233,6 +250,10 @@
   .badge.tf{color:var(--tf);background:var(--tf-bg);border-color:var(--tf-bd)}
   .badge.free{color:var(--free);background:var(--free-bg);border-color:var(--free-bd)}
   .badge.deal{color:var(--deal);background:var(--deal-bg);border-color:var(--deal-bd)}
+  .card h2 .region{display:inline-block;margin-left:6px;vertical-align:1.5px;font-size:9.5px;font-weight:800;
+    letter-spacing:.6px;padding:2px 6px;border-radius:6px;border:1px solid transparent;white-space:nowrap}
+  .card h2 .region.cn{color:var(--cn);background:var(--cn-bg);border-color:var(--cn-bd)}
+  .card h2 .region.us{color:var(--us);background:var(--us-bg);border-color:var(--us-bd)}
   .desc{font-size:12.8px;color:var(--desc);line-height:1.62}
   .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:auto;padding-top:2px}
   .meta span{font-size:10.8px;color:var(--meta);background:var(--chip);border:1px solid var(--chip-border);
@@ -281,7 +302,7 @@
   <header>
     <span class="eyebrow"><i></i>iOS ONLY · 逐条核实</span>
     <h1>Jenning 的应用雷达</h1>
-    <p class="sub">TestFlight 开放名额 · App Store 限免 · 降价</p>
+    <p class="sub">TestFlight 开放名额 · App Store 限免 · 降价 <em>国区 + 美区</em></p>
     <div class="stamp">
       <span>最近核实 <b id="stamp-time">–</b></span>
       <span><i class="dot" style="background:var(--tf)"></i>TF 名额 <b id="n-tf">–</b></span>
@@ -302,6 +323,12 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
         <input id="q" type="search" placeholder="搜索应用名或关键词，如 Emby、音乐、扫描" autocomplete="off" enterkeyhint="search">
       </label>
+      <div class="regions" role="group" aria-label="按地区筛选">
+        <span class="lbl">地区</span>
+        <button type="button" data-region="all" aria-pressed="true">全部地区</button>
+        <button type="button" data-region="CN" aria-pressed="false">国区 ¥</button>
+        <button type="button" data-region="US" aria-pressed="false">美区 $</button>
+      </div>
     </div>
   </div>
 
@@ -310,8 +337,8 @@
   </main>
 
   <footer>
-    <div class="note">本站只收 iOS（iPhone / iPad）应用。TestFlight 名额与 App Store 价格均以 Apple 页面实时显示为准：名额随时可能满员，限免与降价随时可能恢复原价，点开按钮后先看页面价格再决定。</div>
-    <div>TestFlight 名额与 App Store 价格（中国区，¥）核实于 <span id="foot-time">–</span>，由 GitHub Actions 自动更新</div>
+    <div class="note">本站只收 iOS（iPhone / iPad）应用。TestFlight 名额与 App Store 价格均以 Apple 页面实时显示为准：名额随时可能满员，限免与降价随时可能恢复原价，点开按钮后先看页面价格再决定。美区条目需要美区 Apple ID 才能领取。</div>
+    <div>TestFlight 名额与 App Store 价格（国区 ¥ / 美区 $）核实于 <span id="foot-time">–</span>，由 GitHub Actions 自动更新</div>
     <div>© 2026 Jenning Ko · jenning.ipv64.de</div>
     <a class="toTop" href="#top">回到顶部 ↑</a>
   </footer>
@@ -326,7 +353,9 @@
   var grid = document.getElementById('grid');
   var q = document.getElementById('q');
 
-  var state = {items: [], updatedAt: '', cat: 'all', loading: true, error: ''};
+  var state = {items: [], updatedAt: '', cat: 'all', region: 'all', loading: true, error: ''};
+  var REGION_LABEL = {CN: '国区', US: '美区'};
+  function regionOf(it){ return it.region === 'US' ? 'US' : 'CN'; }
 
   /* ---------- 主题 ---------- */
   var THEMES = ['auto', 'light', 'dark'];
@@ -379,10 +408,12 @@
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
-  function money(n){
+  function currencyOf(it){ return it.currency === 'USD' ? 'USD' : 'CNY'; }
+  function money(n, cur){
     if(n === 0) return '免费';
     var v = Number(n);
     if(!isFinite(v)) return '–';
+    if(cur === 'USD') return '$' + (Number.isInteger(v) ? v : v.toFixed(2));
     return '¥' + (Number.isInteger(v) ? v : v.toFixed(2));
   }
   function shortDate(s){
@@ -401,15 +432,16 @@
     if(it.type === 'tf'){
       return '<div class="price"><span>公开链接 · 名额有限</span></div>';
     }
+    var cur = currencyOf(it);
     var was = Number(it.price_was), now = Number(it.price_now);
     var hasWas = it.price_was !== null && it.price_was !== undefined && isFinite(was);
-    var save = (hasWas && isFinite(now) && was > now) ? (was - now) : 0;
+    var save = (hasWas && isFinite(now) && was > now) ? Math.round((was - now) * 100) / 100 : 0;
     var tag = it.type === 'free'
-      ? '<span class="tag">省 ' + money(save) + '</span>'
-      : '<span class="tag deal">省 ' + money(save) + '</span>';
+      ? '<span class="tag">省 ' + money(save, cur) + '</span>'
+      : '<span class="tag deal">省 ' + money(save, cur) + '</span>';
     return '<div class="price">' +
-      (hasWas ? '<s>' + money(was) + '</s><span>→</span>' : '') +
-      '<b class="' + (now === 0 ? 'zero' : '') + '">' + money(now) + '</b>' +
+      (hasWas ? '<s>' + money(was, cur) + '</s><span>→</span>' : '') +
+      '<b class="' + (now === 0 ? 'zero' : '') + '">' + money(now, cur) + '</b>' +
       (save > 0 ? tag : '') + '</div>';
   }
 
@@ -421,10 +453,13 @@
     var btn = it.btn || LABEL[type] || '打开';
     var name = String(it.name || '');
     var initial = name ? name.slice(0, 1).toUpperCase() : '·';
-    return '<article class="card" data-cat="' + esc(type) + '">' +
+    var regionTag = (type === 'free' || type === 'deal')
+      ? '<span class="region ' + (regionOf(it) === 'US' ? 'us' : 'cn') + '">' + REGION_LABEL[regionOf(it)] + '</span>'
+      : '';
+    return '<article class="card" data-cat="' + esc(type) + '" data-region="' + esc(regionOf(it)) + '">' +
       '<div class="card-top">' +
         '<span class="tile ' + esc(type) + '" aria-hidden="true">' + esc(initial) + '</span>' +
-        '<div class="titlewrap"><h2>' + esc(name) + '</h2></div>' +
+        '<div class="titlewrap"><h2>' + esc(name) + regionTag + '</h2></div>' +
         '<span class="badge ' + esc(type) + '">' + esc(badge) + '</span>' +
       '</div>' +
       '<p class="desc">' + esc(it.desc) + '</p>' +
@@ -437,12 +472,20 @@
     '</article>';
   }
 
+  function inRegion(it){
+    if(state.region === 'all') return true;
+    if(it.type === 'tf') return true;   // TestFlight 名额不分区
+    return regionOf(it) === state.region;
+  }
+
   function visibleItems(){
     var kw = q.value.trim().toLowerCase();
     return state.items.filter(function(it){
+      if(!inRegion(it)) return false;
       if(state.cat !== 'all' && it.type !== state.cat) return false;
       if(!kw) return true;
-      var hay = [it.name, it.desc, it.note, (it.plat || []).join(' '), it.badge].join(' ');
+      var hay = [it.name, it.desc, it.note, (it.plat || []).join(' '), it.badge,
+                 REGION_LABEL[regionOf(it)]].join(' ');
       return hay.toLowerCase().indexOf(kw) >= 0;
     });
   }
@@ -469,13 +512,21 @@
   }
 
   function counts(){
-    var c = {all: state.items.length, tf: 0, free: 0, deal: 0};
-    state.items.forEach(function(it){ if(c[it.type] != null) c[it.type]++; });
+    var c = {all: 0, tf: 0, free: 0, deal: 0};
+    var total = {tf: 0, free: 0, deal: 0};
+    state.items.forEach(function(it){
+      if(total[it.type] != null) total[it.type]++;
+      if(!inRegion(it)) return;
+      c.all++;
+      if(c[it.type] != null) c[it.type]++;
+    });
     Object.keys(c).forEach(function(k){
       var el = document.getElementById('c-' + k);
       if(el) el.textContent = c[k];
+    });
+    Object.keys(total).forEach(function(k){
       var nb = document.getElementById('n-' + k);
-      if(nb) nb.textContent = c[k];
+      if(nb) nb.textContent = total[k];
     });
     document.getElementById('stamp-time').textContent = fullStamp(state.updatedAt);
     document.getElementById('foot-time').textContent = fullStamp(state.updatedAt);
@@ -493,6 +544,16 @@
   });
   q.addEventListener('input', render);
   q.addEventListener('search', render);
+
+  document.querySelectorAll('.regions button').forEach(function(b){
+    b.addEventListener('click', function(){
+      state.region = b.dataset.region;
+      document.querySelectorAll('.regions button').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.region === state.region));
+      });
+      counts(); render();
+    });
+  });
 
   /* ---------- 数据 ---------- */
   function load(){
