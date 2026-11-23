@@ -394,6 +394,14 @@ def main():
     # 排序：tf → free → deal，组内保持原顺序
     kept.sort(key=lambda it: TYPE_ORDER.get(it.get("type"), 9))
 
+    # 安全阀：一次剔除过半条目通常意味着上游接口异常，宁可不更新也不要清空站点
+    if before >= 10 and len(dropped) > before // 2:
+        log("警告：本次要剔除 %d/%d 条，超过一半，疑似接口异常，放弃写回。" % (len(dropped), before))
+        return 0
+    if not kept:
+        log("警告：核对后没有任何条目，放弃写回。")
+        return 0
+
     now = datetime.datetime.now(BEIJING).strftime("%Y-%m-%d %H:%M")
     data["updated_at"] = now
     data["items"] = kept
