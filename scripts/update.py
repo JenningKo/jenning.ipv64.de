@@ -312,8 +312,8 @@ def discover_from_us_page(known_ids, seen):
                 rating_count = int(match.group(2))
             except ValueError:
                 rating = None
-        # 美区源里杂项很多，只收有足够人打分、评分够高的，避免把站点变成流水账
-        if rating is None or rating < 4.5 or rating_count < 300:
+        # 美区源里杂项很多，只收评分高、打分人多的，避免把站点变成流水账
+        if rating is None or rating < 4.6 or rating_count < 500:
             continue
         seen.add(app_id)
         out.append(
@@ -526,7 +526,7 @@ def main():
 
     added = []
     for cand in candidates:
-        if len(added) >= 3:
+        if len(added) >= 2:
             break
         region = cand.get("region") or DEFAULT_REGION
         status, entry = lookup_app(cand["app_id"], region)
