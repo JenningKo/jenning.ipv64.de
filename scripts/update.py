@@ -22,6 +22,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -111,10 +112,16 @@ def check_testflight(url):
 # ---------------------------------------------------------------- App Store
 
 
-def lookup_app(app_id, region=DEFAULT_REGION):
-    """按区服查 Apple lookup，返回 (状态, data)。状态：ok / notfound / error"""
+def lookup_app(app_id, region=DEFAULT_REGION, fresh=False):
+    """按区服查 Apple lookup，返回 (状态, data)。状态：ok / notfound / error
+
+    fresh=True 时带上随机参数，绕开 Apple CDN 上可能还没刷新的旧价格缓存
+    （曾出现同一 App 在本机返回 $0、在 CI 上返回原价的情况）。
+    """
     country = REGIONS[region]["country"]
     url = "https://itunes.apple.com/lookup?country=%s&id=%s" % (country, app_id)
+    if fresh:
+        url += "&cb=%d" % int(time.time() * 1000 % 100000000)
     try:
         _, body = fetch(url, ua=UA_DESKTOP)
         payload = json.loads(body)
@@ -380,6 +387,25 @@ def build_item(cand, entry):
 # ---------------------------------------------------------------- 主流程
 
 
+def judge_deal(it, entry, region):
+    """判断条目还能不能留：返回 (keep|drop, 现价, 剔除原因)"""
+    if entry is None:
+        return "drop", None, "%s App Store 查不到该 App" % REGIONS[region]["label"]
+    if not is_ios_app(entry):
+        return "drop", None, "已不是 iOS App"
+    price = app_price(entry)
+    if price is None:
+        return "keep", None, None
+    if it.get("type") == "free":
+        if price != 0:
+            return "drop", price, "限免已结束，现价 %s" % money(price, region)
+        return "keep", 0, None
+    was = it.get("price_was")
+    if was is not None and price >= float(was):
+        return "drop", price, "降价已结束，现价 %s（原价 %s）" % (money(price, region), money(was, region))
+    return "keep", price, None
+
+
 def main():
     dry_run = "--dry-run" in sys.argv
 
@@ -441,34 +467,40 @@ def main():
                 log("  [价格] 接口异常，保留：%s" % it.get("name"))
                 kept.append(it)
                 continue
-            if status == "notfound":
-                dropped.append((it, "%s App Store 查不到该 App" % cfg["label"]))
+
+            decision, price, reason = judge_deal(it, status == "ok" and entry or None, region)
+
+            # 要剔除之前再查几次（带随机参数绕缓存）：Apple CDN 偶尔还会返回没刷新价格的旧数据，
+            # 只凭一次结果就删条目，会误删仍在限免的 App。
+            if decision == "drop":
+                for attempt in range(3):
+                    time.sleep(1.2)
+                    status2, entry2 = lookup_app(it["app_id"], region, fresh=True)
+                    if status2 != "ok":
+                        continue
+                    decision2, price2, reason2 = judge_deal(it, entry2, region)
+                    log(
+                        "  [复核 %d/3] %s：%s %s"
+                        % (attempt + 1, it.get("name"), status2, money(app_price(entry2), region))
+                    )
+                    if decision2 == "keep":
+                        decision, price, reason, status, entry = "keep", price2, None, status2, entry2
+                        break
+                    decision, price, reason = decision2, price2, reason2
+
+            if decision == "drop":
+                dropped.append((it, reason))
                 continue
-            if not is_ios_app(entry):
-                dropped.append((it, "已不是 iOS App"))
-                continue
-            price = app_price(entry)
             if price is None:
                 log("  [价格] 读不到价格，保留：%s" % it.get("name"))
                 kept.append(it)
                 continue
-            was = it.get("price_was")
-            if kind == "free":
-                if price != 0:
-                    dropped.append((it, "限免已结束，现价 %s" % money(price, region)))
-                    continue
-                it["price_now"] = 0
-            else:  # deal
-                if was is not None and price >= float(was):
-                    dropped.append(
-                        (it, "降价已结束，现价 %s（原价 %s）" % (money(price, region), money(was, region)))
-                    )
-                    continue
-                if price <= 0:
-                    # 降价变成免费了：升级成限免
-                    it["type"] = "free"
-                    it["badge"] = "限免中"
-                it["price_now"] = price
+
+            if it["type"] == "deal" and price <= 0:
+                # 降价变成免费了：升级成限免
+                it["type"] = "free"
+                it["badge"] = "限免中"
+            it["price_now"] = price
             if it.get("url") and entry.get("trackViewUrl"):
                 it["url"] = re.sub(r"\?.*$", "", entry["trackViewUrl"])
             if not it.get("name"):

@@ -405,6 +405,40 @@
     },
     {
       "type": "free",
+      "name": "WEATHERCAST 24 · 当地天气",
+      "desc": "干净的本地天气预报：48 小时逐时、最长 15 天预报，气温、降水、风力一屏看完，没有广告和多余模块。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区仍在售 ¥98，只有美区免费",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/weathercast-24-local-forecast/id1512214163",
+      "app_id": 1512214163,
+      "price_was": 14.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
+      "name": "Ghost SLS · 灵异探测相机",
+      "desc": "把 iPhone 变成 SLS「人影探测」相机：滤出画面里疑似人形的轮廓，还能判断是不是灯光造成的假象，拍下来存档，纯娱乐向。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区未上架",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/ghost-sls/id1504150811",
+      "app_id": 1504150811,
+      "price_was": 0.99,
+      "price_now": 0
+    },
+    {
+      "type": "free",
       "name": "Relight - Better Photos",
       "desc": "Photo & Video 类应用，美区限时免费（原价 $4.99，4.8★ / 1682 个评分），价格由 Apple 官方接口核实。",
       "badge": "限免中",
@@ -562,6 +596,23 @@
       "price_now": 3,
       "region": "CN",
       "currency": "CNY"
+    },
+    {
+      "type": "deal",
+      "name": "Things 3",
+      "desc": "口碑最好的 GTD 待办之一：收件箱、今天、计划、随时、某天五个视角，加项目与区域管理，界面克制好看，一次买断不订阅。",
+      "badge": "降价中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "note": "国区现价 ¥47",
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/things-3/id904237743",
+      "app_id": 904237743,
+      "price_was": 9.99,
+      "price_now": 6.99
     },
     {
       "type": "deal",
