@@ -20,6 +20,7 @@ jenning.ipv64.de 数据自动保鲜脚本（只用 Python 标准库）
 import datetime
 import json
 import os
+import random
 import re
 import sys
 import time
@@ -112,16 +113,18 @@ def check_testflight(url):
 # ---------------------------------------------------------------- App Store
 
 
-def lookup_app(app_id, region=DEFAULT_REGION, fresh=False):
+def lookup_app(app_id, region=DEFAULT_REGION, fresh=True):
     """按区服查 Apple lookup，返回 (状态, data)。状态：ok / notfound / error
 
-    fresh=True 时带上随机参数，绕开 Apple CDN 上可能还没刷新的旧价格缓存
-    （曾出现同一 App 在本机返回 $0、在 CI 上返回原价的情况）。
+    每次都带一个随机参数：Apple 的 lookup 结果在 CDN 上缓存得很久，
+    同一 App 不加参数会拿到几小时前的旧价格（实测有 App 显示限免、
+    实际已恢复 $14.99，也有降价中的 App 被旧缓存显示成原价）。
+    加参数等于强制回源，拿到的才是当前价。
     """
     country = REGIONS[region]["country"]
     url = "https://itunes.apple.com/lookup?country=%s&id=%s" % (country, app_id)
     if fresh:
-        url += "&cb=%d" % int(time.time() * 1000 % 100000000)
+        url += "&cb=%d" % random.randint(100000, 999999999)
     try:
         _, body = fetch(url, ua=UA_DESKTOP)
         payload = json.loads(body)
