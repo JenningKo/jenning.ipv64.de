@@ -113,17 +113,23 @@ def lookup_app(app_id):
     return "ok", results[0]
 
 
+def tidy_price(value):
+    if value is None:
+        return None
+    return int(value) if float(value).is_integer() else round(float(value), 2)
+
+
 def app_price(entry):
     """取现价（数值，人民币），取不到返回 None"""
     for key in ("price", "priceFormatted"):
         val = entry.get(key)
         if isinstance(val, (int, float)):
-            return float(val)
+            return tidy_price(val)
     raw = entry.get("priceFormatted") or ""
     match = re.search(r"[\d.]+", str(raw).replace(",", ""))
     if match:
         try:
-            return float(match.group(0))
+            return tidy_price(float(match.group(0)))
         except ValueError:
             return None
     return None
@@ -345,9 +351,8 @@ def main():
                 it["price_now"] = price
             if it.get("url") and entry.get("trackViewUrl"):
                 it["url"] = re.sub(r"\?.*$", "", entry["trackViewUrl"])
-            name = entry.get("trackName")
-            if name:
-                it["name"] = clean_text(name, 60)
+            if not it.get("name"):
+                it["name"] = clean_text(entry.get("trackName") or "", 60)
             kept.append(it)
             continue
 

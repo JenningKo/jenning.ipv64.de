@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23 21:22",
+  "updated_at": "2026-11-23 21:25",
   "items": [
     {
       "type": "tf",
@@ -224,7 +224,7 @@
     },
     {
       "type": "free",
-      "name": "iCleanShot - 懒人专用",
+      "name": "iCleanShot · 懒人相册清理",
       "desc": "用「滑动」的极简方式给相册瘦身，照片一多又懒得整理的时候很好用。",
       "badge": "限免中",
       "plat": [
@@ -238,7 +238,7 @@
     },
     {
       "type": "free",
-      "name": "Tapewind: Cassette Player",
+      "name": "Tapewind · 磁带播放器",
       "desc": "把音乐库播成一台复古磁带机：每张专辑、每个歌单都变成一盘 A/B 面磁带，带记忆播放进度。",
       "badge": "限免中",
       "plat": [
@@ -266,7 +266,7 @@
     },
     {
       "type": "free",
-      "name": "Notelo: Notizen",
+      "name": "Notelo",
       "desc": "隐私笔记：手写、文字与图片混排，文件夹加标签，支持 Apple Intelligence 相关能力，iPhone / iPad / Mac 同步。",
       "badge": "限免中",
       "plat": [
@@ -290,7 +290,7 @@
       "url": "https://apps.apple.com/cn/app/marvis-pro/id1447768809",
       "app_id": 1447768809,
       "price_was": 68,
-      "price_now": 38.0
+      "price_now": 38
     },
     {
       "type": "deal",
@@ -304,11 +304,11 @@
       "url": "https://apps.apple.com/cn/app/fl-studio-mobile/id432850619",
       "app_id": 432850619,
       "price_was": 88,
-      "price_now": 44.0
+      "price_now": 44
     },
     {
       "type": "deal",
-      "name": "Be Focused Pro: Pomodoro Timer",
+      "name": "Be Focused Pro · 番茄钟",
       "desc": "轻量的番茄钟与任务清单：分时段专注、统计专注时长，iPhone、iPad 与 Mac 数据同步。",
       "badge": "降价中",
       "plat": [
@@ -318,11 +318,11 @@
       "url": "https://apps.apple.com/cn/app/be-focused-pro-pomodoro-timer/id953426154",
       "app_id": 953426154,
       "price_was": 98,
-      "price_now": 58.0
+      "price_now": 58
     },
     {
       "type": "deal",
-      "name": "好(hǎo)色相机",
+      "name": "好（hǎo）色相机",
       "desc": "把眼前的颜色拍成可复用的色卡：用相机捕捉或从相册导入，取色、配色都方便。",
       "badge": "降价中",
       "plat": [
@@ -332,7 +332,7 @@
       "url": "https://apps.apple.com/cn/app/%E5%A5%BD-h%C7%8Eo-%E8%89%B2%E7%9B%B8%E6%9C%BA/id1151401197",
       "app_id": 1151401197,
       "price_was": 8,
-      "price_now": 3.0
+      "price_now": 3
     }
   ]
 }
