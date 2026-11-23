@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23 21:46",
+  "updated_at": "2026-11-23 21:47",
   "items": [
     {
       "type": "tf",
@@ -308,23 +308,6 @@
     },
     {
       "type": "free",
-      "name": "WEATHERCAST 24 · 当地天气",
-      "desc": "干净的本地天气预报：48 小时逐时、最长 15 天预报，气温、降水、风力一屏看完，没有广告和多余模块。",
-      "badge": "限免中",
-      "plat": [
-        "iPhone",
-        "iPad"
-      ],
-      "note": "国区仍在售 ¥98，只有美区免费",
-      "region": "US",
-      "currency": "USD",
-      "url": "https://apps.apple.com/us/app/weathercast-24-local-forecast/id1512214163",
-      "app_id": 1512214163,
-      "price_was": 14.99,
-      "price_now": 0
-    },
-    {
-      "type": "free",
       "name": "Mouse · Keyboard · 手机变触控板",
       "desc": "把 iPhone / iPad 变成电脑的无线触控板加键盘：多指手势、滚动、全屏输入配表情与功能键，电脑端装个免费助手、同一 Wi-Fi 下就能用。",
       "badge": "限免中",
@@ -422,23 +405,6 @@
     },
     {
       "type": "free",
-      "name": "Ghost SLS · 灵异探测相机",
-      "desc": "把 iPhone 变成 SLS「人影探测」相机：滤出画面里疑似人形的轮廓，还能判断是不是灯光造成的假象，拍下来存档，纯娱乐向。",
-      "badge": "限免中",
-      "plat": [
-        "iPhone",
-        "iPad"
-      ],
-      "note": "国区未上架",
-      "region": "US",
-      "currency": "USD",
-      "url": "https://apps.apple.com/us/app/ghost-sls/id1504150811",
-      "app_id": 1504150811,
-      "price_was": 0.99,
-      "price_now": 0
-    },
-    {
-      "type": "free",
       "name": "Relight - Better Photos",
       "desc": "Photo & Video 类应用，美区限时免费（原价 $4.99，4.8★ / 1682 个评分），价格由 Apple 官方接口核实。",
       "badge": "限免中",
@@ -450,7 +416,7 @@
       "currency": "USD",
       "url": "https://apps.apple.com/us/app/relight-better-photos/id1055538670",
       "app_id": 1055538670,
-      "price_now": 0.0,
+      "price_now": 0,
       "price_was": 4.99
     },
     {
@@ -466,7 +432,7 @@
       "currency": "USD",
       "url": "https://apps.apple.com/us/app/christmas-radio-uk/id1157967613",
       "app_id": 1157967613,
-      "price_now": 0.0,
+      "price_now": 0,
       "price_was": 0.99
     },
     {
@@ -482,8 +448,56 @@
       "currency": "USD",
       "url": "https://apps.apple.com/us/app/calc4key/id1585531759",
       "app_id": 1585531759,
-      "price_now": 0.0,
+      "price_now": 0,
       "price_was": 0.99
+    },
+    {
+      "type": "free",
+      "name": "BlackCam - Black&White Camera",
+      "desc": "Photo & Video 类应用，美区限时免费（原价 $1.99，4.6★ / 575 个评分），价格由 Apple 官方接口核实。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/blackcam-black-white-camera/id943901190",
+      "app_id": 943901190,
+      "price_now": 0.0,
+      "price_was": 1.99
+    },
+    {
+      "type": "free",
+      "name": "Cut for Stories",
+      "desc": "Photo & Video 类应用，美区限时免费（原价 $2.99，4.6★ / 372 个评分），价格由 Apple 官方接口核实。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/cut-for-stories/id1190312896",
+      "app_id": 1190312896,
+      "price_now": 0.0,
+      "price_was": 2.99
+    },
+    {
+      "type": "free",
+      "name": "Bed Time | Large Clock",
+      "desc": "Utilities 类应用，美区限时免费（原价 $1.99，4.7★ / 371 个评分），价格由 Apple 官方接口核实。",
+      "badge": "限免中",
+      "plat": [
+        "iPhone",
+        "iPad"
+      ],
+      "region": "US",
+      "currency": "USD",
+      "url": "https://apps.apple.com/us/app/bed-time-large-clock/id1254058826",
+      "app_id": 1254058826,
+      "price_now": 0.0,
+      "price_was": 1.99
     },
     {
       "type": "deal",
@@ -548,23 +562,6 @@
       "price_now": 3,
       "region": "CN",
       "currency": "CNY"
-    },
-    {
-      "type": "deal",
-      "name": "Things 3",
-      "desc": "口碑最好的 GTD 待办之一：收件箱、今天、计划、随时、某天五个视角，加项目与区域管理，界面克制好看，一次买断不订阅。",
-      "badge": "降价中",
-      "plat": [
-        "iPhone",
-        "iPad"
-      ],
-      "note": "国区现价 ¥47",
-      "region": "US",
-      "currency": "USD",
-      "url": "https://apps.apple.com/us/app/things-3/id904237743",
-      "app_id": 904237743,
-      "price_was": 9.99,
-      "price_now": 6.99
     },
     {
       "type": "deal",
