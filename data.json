@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23 21:53",
+  "updated_at": "2026-11-24 11:44",
   "items": [
     {
       "type": "tf",
@@ -237,22 +237,6 @@
       ],
       "url": "https://apps.apple.com/cn/app/icleanshot-%E6%87%92%E4%BA%BA%E4%B8%93%E7%94%A8/id6756064954",
       "app_id": 6756064954,
-      "price_was": 8,
-      "price_now": 0,
-      "region": "CN",
-      "currency": "CNY"
-    },
-    {
-      "type": "free",
-      "name": "Tapewind · 磁带播放器",
-      "desc": "把音乐库播成一台复古磁带机：每张专辑、每个歌单都变成一盘 A/B 面磁带，带记忆播放进度。",
-      "badge": "限免中",
-      "plat": [
-        "iPhone",
-        "iPad"
-      ],
-      "url": "https://apps.apple.com/cn/app/tapewind-cassette-player/id6819736826",
-      "app_id": 6819736826,
       "price_was": 8,
       "price_now": 0,
       "region": "CN",
