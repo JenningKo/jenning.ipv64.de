@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25 09:52",
+  "updated_at": "2026-11-26 00:43",
   "items": [
     {
       "type": "tf",
@@ -450,22 +450,6 @@
       "app_id": 943901190,
       "price_now": 0,
       "price_was": 1.99
-    },
-    {
-      "type": "free",
-      "name": "Cut for Stories",
-      "desc": "Photo & Video 类应用，美区限时免费（原价 $2.99，4.6★ / 372 个评分），价格由 Apple 官方接口核实。",
-      "badge": "限免中",
-      "plat": [
-        "iPhone",
-        "iPad"
-      ],
-      "region": "US",
-      "currency": "USD",
-      "url": "https://apps.apple.com/us/app/cut-for-stories/id1190312896",
-      "app_id": 1190312896,
-      "price_now": 0,
-      "price_was": 2.99
     },
     {
       "type": "free",
