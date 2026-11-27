@@ -213,6 +213,10 @@ FEEDS = [
 # 表里直接给出 App Store 链接（含 id）、分类、原价与评分，解析稳定。
 US_FREE_PAGE = "https://360-reader.com/paid-iphone-apps-gone-free/"
 
+# 发现源健康监控：仅统计抓取/解析失败，不改变筛选逻辑
+DISCOVERY_STATS = {"attempted": 0, "failed": 0, "failed_sources": []}
+DISCOVERY_MARKER = os.path.join(ROOT, ".discovery_status.json")
+
 DEAL_WORDS = ("限免", "限时免费", "限時免費", "限免中", "免费领取", "免費領取")
 ORIG_PRICE_RE = re.compile(r"(?:原价|原價|定价|定價|原价\s*[:：]?)\s*[¥￥$]\s*(\d+(?:\.\d+)?)")
 APPLE_ID_RE = re.compile(r"apps\.apple\.com/[a-z]{2}/app/[^\s\"'<>]*?/id(\d{6,})")
@@ -234,13 +238,18 @@ def discover_from_feeds(known_ids, seen):
     """从国区公开 RSS 里找「明确限免 + 带 App Store ID」的候选"""
     out = []
     for region, name, url in FEEDS:
+        DISCOVERY_STATS["attempted"] += 1
         try:
             _, xml = fetch(url, ua=UA_DESKTOP)
         except Exception as exc:
+            DISCOVERY_STATS["failed"] += 1
+            DISCOVERY_STATS["failed_sources"].append(name)
             log("  [源] %s 抓取失败（%s），跳过" % (name, type(exc).__name__))
             continue
         blocks = feed_entries(xml)
         if not blocks:
+            DISCOVERY_STATS["failed"] += 1
+            DISCOVERY_STATS["failed_sources"].append(name)
             log("  [源] %s 没有解析到条目，跳过" % name)
             continue
         hits = 0
@@ -278,9 +287,12 @@ RATING_RE = re.compile(r"([\d.]+)\s*\(([\d,]+)")
 
 def discover_from_us_page(known_ids, seen):
     """解析 360 Reader 的美区限免表格：名字 / 分类 / 原价 Free / 评分 / App Store id"""
+    DISCOVERY_STATS["attempted"] += 1
     try:
         _, html = fetch(US_FREE_PAGE, ua=UA_DESKTOP)
     except Exception as exc:
+        DISCOVERY_STATS["failed"] += 1
+        DISCOVERY_STATS["failed_sources"].append("360read")
         log("  [源] 360read 抓取失败（%s），跳过" % type(exc).__name__)
         return []
     rows = re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.S | re.I)
@@ -517,12 +529,37 @@ def main():
     log("扫描公开源寻找新条目…")
     known_ids = {it.get("app_id") for it in kept if it.get("app_id")}
     seen = set()
+    DISCOVERY_STATS["attempted"] = 0
+    DISCOVERY_STATS["failed"] = 0
+    DISCOVERY_STATS["failed_sources"] = []
     candidates = []
     for discover in (discover_from_feeds, discover_from_us_page):
         try:
             candidates.extend(discover(known_ids, seen))
         except Exception as exc:
             log("  发现流程出错（%s），跳过该源" % type(exc).__name__)
+
+    attempted = DISCOVERY_STATS["attempted"]
+    failed = DISCOVERY_STATS["failed"]
+    failed_sources = DISCOVERY_STATS["failed_sources"]
+    all_failed = attempted > 0 and failed == attempted
+    log(
+        "[源] 发现汇总：尝试 %d，失败 %d%s"
+        % (attempted, failed, ("（%s）" % ", ".join(failed_sources)) if failed_sources else "")
+    )
+    if all_failed:
+        log("警告：本次尝试的发现源全部失败，新条目发现已停摆。")
+    elif failed > 0:
+        log("提示：部分发现源失败，其余源正常，新条目发现未中断。")
+    try:
+        with open(DISCOVERY_MARKER, "w", encoding="utf-8") as fh:
+            json.dump(
+                {"attempted": attempted, "failed": failed, "failed_sources": failed_sources, "all_failed": all_failed},
+                fh,
+                ensure_ascii=False,
+            )
+    except Exception as exc:
+        log("提示：发现状态写入失败（%s），不影响本次更新。" % type(exc).__name__)
 
     added = []
     for cand in candidates:

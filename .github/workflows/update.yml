@@ -25,3 +25,18 @@ jobs:
           git add data.json
           git commit -m "chore: auto refresh data.json"
           git push
+      - name: Check discovery sources
+        run: |
+          if [ -f .discovery_status.json ]; then
+            echo "discovery status:"
+            cat .discovery_status.json; echo
+          else
+            echo "no discovery status file"
+            exit 0
+          fi
+          if grep -q '"all_failed": true' .discovery_status.json; then
+            echo "::error::All discovery sources failed in this run."
+            exit 1
+          fi
+          echo "Discovery sources OK."
+
