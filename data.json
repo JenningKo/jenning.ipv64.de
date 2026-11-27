@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-27 09:27",
+  "updated_at": "2026-11-28 00:01",
   "items": [
     {
       "type": "tf",
@@ -581,23 +581,6 @@
       "app_id": 6471380298,
       "price_was": 14.99,
       "price_now": 9.99
-    },
-    {
-      "type": "deal",
-      "name": "60 Seconds! Reatomized",
-      "desc": "核末日生存经营：60 秒内把家人和物资塞进避难所，之后每天决定出门搜刮还是守家，重制版换了高清画面，还加了生存挑战模式。",
-      "badge": "降价中",
-      "plat": [
-        "iPhone",
-        "iPad"
-      ],
-      "note": "国区未上架",
-      "region": "US",
-      "currency": "USD",
-      "url": "https://apps.apple.com/us/app/60-seconds-reatomized/id1474716211",
-      "app_id": 1474716211,
-      "price_was": 3.99,
-      "price_now": 1.99
     }
   ]
 }
